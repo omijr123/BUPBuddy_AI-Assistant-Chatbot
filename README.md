@@ -40,6 +40,14 @@ BUPBuddy_AI-Assistant-Chatbot redefines the campus experience at Bangladesh Univ
 
 ![pic3](https://i.postimg.cc/fy3bH3dC/Screenshot-2025-06-30-193919.png)
 
+-- Work updates on Jira
+
+![pic3](https://i.postimg.cc/SN1xBfdr/Screenshot-2025-07-10-051601.png)
+
+-- Work updates on Jira
+
+![pic3](https://i.postimg.cc/R0KCn5Bs/Screenshot-2025-07-10-051522.png)
+
 ```mermaid
 graph TD
     A[User] --> B{Platform}
