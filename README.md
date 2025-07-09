@@ -7,12 +7,28 @@
   <img src="https://img.shields.io/badge/Release-v1.0-success?style=for-the-badge">
 </div>
 
+
+
 **See BUPBuddy!** 🏡  
 [Live Link Click Here](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html) | 
 
 ## 🌟 Introducing BUPBuddy: Campus Genius Across All Devices
 
 BUPBuddy_AI-Assistant-Chatbot redefines the campus experience at Bangladesh University of Professionals with a powerful AI assistant available **anywhere, anytime** across three platforms. Our intelligent chatbot combines Google's Gemini AI with university-specific knowledge to deliver instant answers to academic queries, admission information, and campus life questions - in both English and বাংলা.
+
+## 📸 Screenshots
+
+-- Home page
+
+![pic1](https://i.postimg.cc/GmqqLkkp/Screenshot-2025-07-08-111527.png)
+
+-- Property+Listing
+
+![pic2](https://i.postimg.cc/y8bphmWb/Screenshot-2025-07-08-112223.png)
+
+-- Admin Dashboard
+
+![pic3](https://i.postimg.cc/k5jSRs42/Screenshot-2025-07-08-124441.png)
 
 ```mermaid
 graph TD
@@ -31,7 +47,7 @@ graph TD
 
 | Platform | Highlights | Get It Now |
 |----------|------------|------------|
-| **🌐 Web App** | Instant access - no installation<br>Progressive Web App capabilities<br>Cross-browser compatibility | [Launch Web Version](https://bupbuddy.edu.bd) |
+| **🌐 Web App** | Instant access - no installation<br>Progressive Web App capabilities<br>Cross-browser compatibility | [Launch Web Version](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html) |
 | **💻 Desktop App** | System tray integration<br>Push notifications<br>Offline capabilities<br>Keyboard shortcuts | [Download for Windows](https://bup.edu.bd/downloads/desktop)<br>[Download for macOS](https://bup.edu.bd/downloads/macos) |
 | **📱 Mobile App** | Campus GPS navigation<br>Event reminders<br>Biometric login<br>Camera document scanning | [<img src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white">](https://play.google.com/store)<br>[<img src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white">](https://apps.apple.com) |
 
@@ -170,25 +186,8 @@ def navigate_to(destination):
 - Biometric Authentication
 - GDPR Compliance
 
-## 🌍 Join Our Community
-
-[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/bupbuddy)
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/bupbuddy)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/bupbuddy)
-
 ## 📜 License
-BUPBuddy is licensed under the **BUP Open Education License** - free for all students, faculty, and staff of Bangladesh University of Professionals.
-
-## 💌 Contact Us
-**Project Leads**  
-✨ Md. Nazmus Sazzad Naiem (2254901041)  
-✨ Jablay Noor Rahman (Omi) (2254901093)  
-
-**Support**  
-📧 [help@bupbuddy.edu.bd](mailto:help@bupbuddy.edu.bd)  
-☎️ +880 96 3838 3838 (Ext: BUDDY)
-
----
+BUPBuddy is - free for all students, faculty, and staff of Bangladesh University of Professionals.
 
 <div align="center">
   <h3>Empowering BUP Community Through Intelligent Assistance</h3>
