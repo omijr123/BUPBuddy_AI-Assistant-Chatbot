@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>BUPBuddy - Bangladesh University of Professionals</title>
+    <hta:application
+        id="BUPBuddyApp"
+        applicationname="BUPBuddy"
+        border="thin"
+        caption="yes"
+        icon="https://bup.edu.bd/public/images/favicon.ico"
+        maximizebutton="yes"
+        minimizebutton="yes"
+        showintaskbar="yes"
+        singleinstance="yes"
+        sysmenu="yes"
+        navigable="yes"
+        windowstate="normal"
+    />
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333;
+            --header-bg: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            --bot-message-bg: #f0f4f8;
+            --user-message-bg: linear-gradient(135deg, #1a2a6c, #2a4ab4);
+            --quick-actions-bg: #f7f9fc;
+            --input-bg: #ffffff;
+            --input-border-color: #e0e0e0;
+            --category-title-color: #1a2a6c;
+            --action-btn-bg: white;
+            --action-btn-border: #e9ecef;
+            --footer-bg: #f8f9fa;
+            --primary-color: #1a2a6c;
+            --secondary-color: #b21f1f;
+            --accent-color: #3b82f6;
+            --notification-bg: rgba(0, 0, 0, 0.7);
+            --notification-text: white;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        
+        body {
+            background-image: url('https://bup.edu.bd/public/upload/slider/20250324_1742832599507.jpg');
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            min-height: 100vh; 
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            background-color: #ffffff;
+            color: #333;
+        }
+        
+        body::before { 
+            content: ''; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85); 
+            z-index: -1;
+            transition: background 0.4s ease;
+        }
+
+        body.dark-mode::before {
+             background: rgba(0, 0, 0, 0.75);
+        }
+        
+        .main-content { 
+            position: relative; 
+            z-index: 1; 
+            width: 100%; 
+            max-width: 1200px;
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        .university-header {
+            text-align: center;
+            margin: 30px 0;
+            color: #1a2a6c;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.7); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        body.dark-mode .university-header {
+             background: rgba(15, 23, 42, 0.8);
+             color: #f0f0f0;
+             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .university-title { 
+            font-size: 42px; 
+            font-weight: 800; 
+            margin-bottom: 10px; 
+            color: #1a2a6c;
+        }
+        
+        .university-subtitle { 
+            font-size: 22px; 
+            margin-bottom: 20px; 
+            color: #b21f1f; 
+            font-weight: 600; 
+        }
+        
+        .university-motto {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 25px;
+            color: #1a2a6c;
+        }
+        
+        .feature-cards { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 100px;
+        }
+        
+        .feature-card { 
+            background: rgba(26, 42, 108, 0.1); 
+            border: 1px solid rgba(26, 42, 108, 0.2); 
+            border-radius: 15px; 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column;
+            gap: 15px; 
+            transition: all 0.3s ease;
+            min-height: 200px;
+        }
+        
+        .feature-card:hover { 
+            background: rgba(26, 42, 108, 0.2); 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
+        }
+        
+        .feature-icon { 
+            width: 60px; 
+            height: 60px; 
+            background: #1a2a6c; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 24px; 
+            color: white; 
+            margin-bottom: 15px;
+        }
+        
+        .feature-text { 
+            font-size: 20px; 
+            font-weight: 600; 
+            color: #1a2a6c;
+        }
+        
+        .feature-description {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .chat-toggle-btn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            width: 70px; 
+            height: 70px; 
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f); 
+            border: none; 
+            border-radius: 50%; 
+            color: white; 
+            font-size: 28px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+            z-index: 1001; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .chat-toggle-btn:hover { 
+            transform: scale(1.1); 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); 
+        }
+        
+        .chat-container { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            width: 450px; 
+            height: calc(100vh - 40px); 
+            background: #ffffff; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
+            z-index: 1000; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            transform: translateX(110%); 
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s, color 0.3s; 
+            color: #333; 
+        }
+        
+        .chat-container.active { 
+            transform: translateX(0); 
+        }
+        
+        .chat-header { 
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f); 
+            color: white; 
+            padding: 10px 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-shrink: 0; 
+            transition: background 0.3s; 
+        }
+        
+        .chat-header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        
+        .chat-logo img { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            border: 2px solid white; 
+            object-fit: cover; 
+            background-color: white; 
+        }
+        
+        .chat-header-text h3 { 
+            font-size: 16px; 
+            margin: 0; 
+        }
+        
+        .chat-header-text .subtitle { 
+            font-size: 12px; 
+            opacity: 0.9; 
+        }
+        
+        .chat-header-right { 
+            display: flex; 
+            gap: 5px; 
+            align-items: center; 
+        }
+        
+        .back-btn { 
+            display: none; 
+        }
+        
+        .header-btn, .back-btn { 
+            background: rgba(255, 255, 255, 0.2); 
+            border: none; 
+            color: white; 
+            padding: 6px 10px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-weight: 500; 
+        }
+        
+        .header-btn:hover, .back-btn:hover { 
+            background: rgba(255, 255, 255, 0.4); 
+            transform: translateY(-1px); 
+        }
+        
+        .minimize-btn { 
+            padding: 5px; 
+            font-size: 18px; 
+            width: 30px; 
+            height: 30px; 
+            justify-content: center;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, #1a2a6c, #3b82f6);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-shrink: 0;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .welcome-banner .icon { 
+            font-size: 24px; 
+            position: absolute; 
+            left: 20px; 
+        }
+        
+        .welcome-banner span { 
+            display: block; 
+        }
+        
+        .quick-actions { 
+            background: #f7f9fc; 
+            overflow-y: auto; 
+            flex-grow: 1; 
+            transition: background 0.3s; 
+        }
+        
+        .quick-actions-inner { 
+            padding: 20px; 
+        }
+        
+        .action-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+        }
+        
+        .action-grid .action-btn { 
+            animation: popIn 0.5s ease-out forwards; 
+            opacity: 0; 
+        }
+        
+        .category-section { 
+            margin-bottom: 25px; 
+        }
+        
+        .category-title { 
+            font-weight: 700; 
+            margin-bottom: 12px; 
+            color: #1a2a6c; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 14px; 
+        }
+        
+        .category-icon { 
+            font-size: 18px; 
+        }
+        
+        .action-btn { 
+            background: white; 
+            border: 1px solid #e9ecef; 
+            color: #333; 
+            padding: 15px 8px; 
+            border-radius: 8px; 
+            font-size: 12px; 
+            cursor: pointer; 
+            text-align: center; 
+            transition: all 0.2s ease; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 5px; 
+            font-weight: 500; 
+            min-height: 85px;
+        }
+        
+        .action-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            border-color: #1a2a6c; 
+        }
+        
+        .action-btn .icon { 
+            font-size: 24px; 
+            margin-bottom: 5px; 
+            color: #1a2a6c; 
+        }
+        
+        .action-btn span { 
+            font-size: 11px; 
+            font-weight: 600; 
+        }
+        
+        .chat-messages { 
+            flex-grow: 1; 
+            padding: 20px; 
+            overflow-y: auto; 
+            background: #ffffff; 
+            display: none; 
+            flex-direction: column; 
+            gap: 15px; 
+            transition: background 0.3s; 
+        }
+        
+        .message { 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 10px; 
+            max-width: 90%; 
+            animation: slideInUp 0.4s ease-out; 
+        }
+        
+        .message.user { 
+            align-self: flex-end; 
+            flex-direction: row-reverse; 
+        }
+        
+        .message-avatar { 
+            width: 35px; 
+            height: 35px; 
+            border-radius: 50%; 
+            flex-shrink: 0; 
+            background-size: cover; 
+            background-position: center; 
+            background-color: white;
+        }
+        
+        .message.bot .message-avatar { 
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWYheR8Dv3dXmvwi80sJc48nt6kmbpJSxR1A&s'); 
+        }
+        
+        .message.user .message-avatar { 
+            background-image: none; 
+            background-color: #b21f1f; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-weight: bold; 
+            font-size: 16px; 
+        }
+        
+        .message.user .message-avatar::before { 
+            content: 'U'; 
+        }
+        
+        .message-content { 
+            padding: 12px 15px; 
+            border-radius: 15px; 
+            line-height: 1.5; 
+            word-wrap: break-word; 
+        }
+        
+        .message-content ul, .message-content ol {
+            padding-left: 20px;
+        }
+
+        .message.bot .message-content { 
+            background: #f0f4f8; 
+            color: #333; 
+            border-bottom-left-radius: 5px; 
+        }
+        
+        .message.user .message-content { 
+            background: linear-gradient(135deg, #1a2a6c, #2a4ab4); 
+            color: white; 
+            border-bottom-right-radius: 5px; 
+        }
+        
+        .message-content a { 
+            color: #007bff; 
+            font-weight: 500; 
+            text-decoration: none; 
+        }
+
+        .message-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+            background-color: #ffffff;
+            color: #333;
+        }
+        .message-content th, .message-content td {
+            border: 1px solid #e0e0e0;
+            padding: 6px;
+            text-align: left;
+        }
+        .message-content th {
+            background-color: #f0f4f8;
+        }
+
+        .message-content a:hover { 
+            text-decoration: underline; 
+        }
+        
+        .message.user .message-content a { 
+            color: #80bfff; 
+        }
+        
+        .chat-container.view-conversation .quick-actions { 
+            display: none; 
+        }
+        
+        .chat-container.view-conversation .chat-messages, .chat-container.view-conversation .back-btn { 
+            display: flex; 
+        }
+        
+        .chat-container.view-conversation .chat-header-right { 
+            gap: 8px; 
+        }
+        
+        .chat-container.view-conversation .header-btn-lang, .chat-container.view-conversation .header-btn-dark { 
+            display: none; 
+        }
+        
+        .typing-indicator { 
+            display: none; 
+            padding: 0 20px 10px 20px; 
+            color: #888; 
+            font-style: italic; 
+            font-size: 13px; 
+        }
+        
+        .chat-input-area {
+            padding: 15px 20px; 
+            border-top: 1px solid #e0e0e0; 
+            background: #ffffff; 
+            flex-shrink: 0; 
+            transition: background 0.3s, border-top-color 0.3s; 
+        }
+        
+        .input-container { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+            background: #ffffff; 
+            border-radius: 25px; 
+            padding: 5px; 
+            border: 1px solid #e0e0e0; 
+            transition: border-color 0.2s, box-shadow 0.2s; 
+        }
+        
+        .input-container:focus-within { 
+            border-color: #1a2a6c; 
+            box-shadow: 0 0 0 2px rgba(26, 42, 108, 0.2); 
+        }
+        
+        .chat-input { 
+            flex: 1; 
+            padding: 10px 15px; 
+            border: none; 
+            background: transparent; 
+            font-size: 14px; 
+            outline: none; 
+            resize: none; 
+            max-height: 100px; 
+            color: #333; 
+        }
+        
+        .input-controls { 
+            display: flex; 
+            gap: 8px; 
+            align-items: center; 
+            padding-right: 5px; 
+        }
+        
+        .input-btn { 
+            width: 35px; 
+            height: 35px; 
+            border: none; 
+            border-radius: 50%; 
+            background: #e0e0e0; 
+            color: #666; 
+            font-size: 16px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .input-btn:hover { 
+            background: #1a2a6c; 
+            color: white; 
+        }
+        
+        .input-btn.voice-recording { 
+            background: #f44336 !important; 
+            color: white !important; 
+            animation: pulse 1s infinite; 
+        }
+        
+        @keyframes pulse { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.1); } 
+            100% { transform: scale(1); } 
+        }
+        
+        .send-btn { 
+            background: #1a2a6c; 
+            color: white; 
+        }
+        
+        .chat-footer { 
+            padding: 10px 20px; 
+            background: #f8f9fa; 
+            border-top: 1px solid #e0e0e0; 
+            text-align: center; 
+            font-size: 12px; 
+            color: #888; 
+            flex-shrink: 0; 
+            transition: background 0.3s, border-top-color 0.3s; 
+        }
+        
+        .language-selector { 
+            position: absolute; 
+            top: 55px; 
+            right: 135px; 
+            background: white; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+            padding: 5px; 
+            display: none; 
+            z-index: 1500; 
+            min-width: 120px; 
+        }
+        
+        .language-selector.active { 
+            display: block; 
+            animation: fadeIn 0.2s ease; 
+        }
+        
+        .language-option { 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            transition: background 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 14px; 
+            font-weight: 500; 
+            color: #333;
+        }
+        
+        .language-option:hover { 
+            background: #f0f4f8; 
+        }
+        
+        .language-option.selected { 
+            background: #e0e7ff; 
+            font-weight: 700; 
+            color: #1a2a6c; 
+        }
+        
+        .lang-flag { 
+            font-size: 16px; 
+        }
+        
+        .file-upload-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .file-upload-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        .file-upload-content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .file-upload-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #1a2a6c;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #1a2a6c;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-area:hover {
+            background: rgba(26, 42, 108, 0.05);
+        }
+        
+        .file-upload-icon {
+            font-size: 48px;
+            color: #1a2a6c;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .file-upload-subtext {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(26, 42, 108, 0.05);
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .file-preview.active {
+            display: flex;
+        }
+        
+        .file-icon {
+            font-size: 24px;
+            color: #1a2a6c;
+        }
+        
+        .file-info {
+            text-align: left;
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            color: #333;
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .file-remove {
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .file-upload-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .file-upload-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+        
+        .file-upload-btn.select {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .file-upload-btn.upload {
+            background: #1a2a6c;
+            color: white;
+            display: none;
+        }
+        
+        .file-upload-btn.cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .file-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-upload-btn.upload:hover {
+            background: #0c1a4a;
+        }
+        
+        .virtual-keyboard-container {
+            margin-top: 10px;
+            display: none;
+            background: #ffffff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .toast-notification {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out, fadeOut 0.3s ease-in 2.2s;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 500px) {
+            .main-content {
+                padding: 10px;
+            }
+            .university-header {
+                padding: 20px 15px;
+            }
+            .university-title {
+                font-size: 28px;
+            }
+            .university-subtitle {
+                font-size: 16px;
+            }
+            .chat-toggle-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                bottom: 15px;
+                right: 15px;
+            }
+            .chat-container { 
+                width: calc(100% - 20px); 
+                height: calc(100% - 20px); 
+                top: 10px; 
+                right: 10px; 
+            }
+            .action-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            .language-selector { 
+                right: 100px; 
+            }
+            .header-btn span.btn-text { 
+                display: none; 
+            }
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        body {
+            scrollbar-face-color: rgba(26, 42, 108, 0.3);
+            scrollbar-track-color: rgba(0, 0, 0, 0.05);
+            scrollbar-arrow-color: #ffffff;
+            scrollbar-shadow-color: rgba(26, 42, 108, 0.3);
+            scrollbar-highlight-color: rgba(26, 42, 108, 0.3);
+            scrollbar-3dlight-color: #efefef;
+            scrollbar-darkshadow-color: #efefef;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="university-header">
+            <h1 class="university-title">Bangladesh University of Professionals</h1>
+            <p class="university-subtitle">Excellence Through Knowledge</p>
+            <p class="university-motto">Empowering future leaders with professional education and research excellence</p>
+        </div>
+        
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <div class="feature-text">Academic Excellence</div>
+                <div class="feature-description">Renowned faculty and comprehensive programs preparing students for successful careers in various professional fields.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏛️</div>
+                <div class="feature-text">Modern Campus</div>
+                <div class="feature-description">State-of-the-art facilities including advanced laboratories, libraries, and recreational spaces for holistic development.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍🏫</div>
+                <div class="feature-text">Expert Faculty</div>
+                <div class="feature-description">Dedicated professors and researchers with industry experience providing quality education and mentorship.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-text">Digital Innovation</div>
+                <div class="feature-description">Cutting-edge technology integration and digital resources enhancing the learning experience.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <div class="feature-text">Community Engagement</div>
+                <div class="feature-description">Active participation in community service and industry partnerships for real-world impact.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔬</div>
+                <div class="feature-text">Research Focus</div>
+                <div class="feature-description">Commitment to innovative research addressing societal challenges and advancing knowledge.</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <div class="feature-text">Library & Resources</div>
+                <div class="feature-description">Extensive collection of academic resources and digital databases to support research and learning.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-text">Global Partnerships</div>
+                <div class="feature-description">International collaborations and exchange programs with prestigious universities worldwide.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-text">Student Achievements</div>
+                <div class="feature-description">Our students consistently excel in national and international competitions and research publications.</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="chat-toggle-btn" id="chatToggleBtn">💬</button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-logo"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWYheR8Dv3dXmvwi80sJc48nt6kmbpJSxR1A&s" alt="BUPBuddy Logo"></div>
+                <div class="chat-header-text">
+                    <h3>BUPBuddy</h3>
+                    <div class="subtitle" data-translate="ai-assistant">AI Assistant</div>
+                </div>
+            </div>
+            <div class="chat-header-right">
+                <button class="back-btn" id="backBtn">← Back</button>
+                <button class="header-btn header-btn-clear" id="clearChatBtn">Clear Chat</button>
+                <button class="header-btn header-btn-lang" id="languageBtn">English</button>
+                <button class="header-btn header-btn-dark" id="darkModeBtn">🌙 Night Mode</button>
+                <button class="header-btn minimize-btn" id="minimizeBtn" title="Minimize">－</button>
+            </div>
+        </div>
+        
+        <div class="quick-actions" id="quickActions">
+            <div class="welcome-banner">
+                <span class="icon">🎓</span>
+                <div>
+                    <span data-translate="welcome-banner-1">WELCOME TO BUP ADMISSION ENQUIRY</span>
+                    <span data-translate="welcome-banner-2">CHATBOT</span>
+                </div>
+            </div>
+            <div class="quick-actions-inner">
+                <div class="category-section">
+                    <div class="category-title">
+                        <i class="category-icon fas fa-graduation-cap"></i>
+                        <span data-translate="cat-admission">Academics & Admission</span>
+                    </div>
+                    <div class="action-grid">
+                        <button class="action-btn" data-message="Academic Programs">
+                            <div class="icon">📖</div>
+                            <span data-translate="programs-label">PROGRAMS</span>
+                        </button>
+                        <button class="action-btn" data-message="Eligibility">
+                            <div class="icon">📊</div>
+                            <span data-translate="eligibility-label">ELIGIBILITY</span>
+                        </button>
+                        <button class="action-btn" data-message="How to apply">
+                            <div class="icon">📝</div>
+                            <span data-translate="how-to-apply-label">HOW TO APPLY</span>
+                        </button>
+                        <button class="action-btn" data-message="Scholarship">
+                            <div class="icon">🏅</div>
+                            <span data-translate="scholarship-label">SCHOLARSHIP</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="category-section">
+                    <div class="category-title">
+                        <i class="category-icon fas fa-university"></i>
+                        <span data-translate="cat-campus">Campus Life</span>
+                    </div>
+                    <div class="action-grid">
+                        <button class="action-btn" data-message="Accommodation">
+                            <div class="icon">🏠</div>
+                            <span data-translate="hall-label">HALLS</span>
+                        </button>
+                        <button class="action-btn" data-message="Sports">
+                            <div class="icon">⚽</div>
+                            <span data-translate="sports-label">SPORTS</span>
+                        </button>
+                        <button class="action-btn" data-message="Cafeteria">
+                            <div class="icon">🍔</div>
+                            <span data-translate="cafeteria-label">CAFETERIA</span>
+                        </button>
+                        <button class="action-btn" data-message="Events">
+                            <div class="icon">🗓️</div>
+                            <span data-translate="events-label">EVENTS</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">BUPBuddy is typing...</div>
+
+        <div class="chat-input-area">
+            <div class="input-container">
+                <textarea class="chat-input" id="chatInput" placeholder="Type your message here..." rows="1"></textarea>
+                <div class="input-controls">
+                    <button class="input-btn" id="fileBtn" title="Upload File">📎</button>
+                    <button class="input-btn send-btn" id="sendBtn">➤</button>
+                </div>
+            </div>
+            <div class="virtual-keyboard-container" id="virtualKeyboard"></div>
+        </div>
+
+        <div class="chat-footer"><span data-translate="help-line">Help Line: 09666799390, 01769028540, 01769028541, 01769028542</span></div>
+    </div>
+    
+    <div class="language-selector" id="languageSelector">
+        <div class="language-option" data-lang="en">🇺🇸 English</div>
+        <div class="language-option" data-lang="bn">🇧🇩 বাংলা</div>
+    </div>
+
+    <div class="file-upload-overlay" id="fileUploadOverlay">
+        <div class="file-upload-content">
+            <h3 class="file-upload-title" data-translate="file-upload">Upload File</h3>
+            <div class="file-upload-area" id="fileUploadArea">
+                <div class="file-upload-icon">📤</div>
+                <p class="file-upload-text" data-translate="drag-drop">Drag & drop files here</p>
+                <p class="file-upload-subtext" data-translate="file-types">Supports PDF, DOC, JPG, PNG (Max 10MB)</p>
+            </div>
+            <div class="file-preview" id="filePreview">
+                <div class="file-icon">📄</div>
+                <div class="file-info">
+                    <div class="file-name" id="fileName"></div>
+                    <div class="file-size" id="fileSize"></div>
+                </div>
+                <div class="file-remove" id="fileRemove">✕</div>
+            </div>
+            <div class="file-upload-buttons">
+                <button class="file-upload-btn select" id="selectFileBtn" data-translate="select-file">Select File</button>
+                <button class="file-upload-btn upload" id="uploadFileBtn" data-translate="upload-send">Upload & Send</button>
+                <button class="file-upload-btn cancel" id="cancelUploadBtn" data-translate="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // HTA Compatibility: Using traditional ES5 syntax
+        function BUPChatbot() {
+            this.el = {};
+            this.state = { 
+                conversationHistory: [], 
+                currentLanguage: 'en', 
+                isDarkMode: false, 
+                chatInitiated: false,
+                selectedFile: null,
+                keyboard: null
+            };
+            
+            this.data = { 
+                translations: this.getTranslations(), 
+                keywordResponses: this.getKeywordResponses()
+            };
+            
+            this.cacheDOMElements();
+            this.initialize();
+        }
+
+        BUPChatbot.prototype.cacheDOMElements = function() {
+            this.el = {
+                body: document.body, 
+                chatContainer: document.getElementById('chatContainer'),
+                chatToggleBtn: document.getElementById('chatToggleBtn'), 
+                minimizeBtn: document.getElementById('minimizeBtn'),
+                backBtn: document.getElementById('backBtn'), 
+                clearChatBtn: document.getElementById('clearChatBtn'),
+                languageBtn: document.getElementById('languageBtn'), 
+                darkModeBtn: document.getElementById('darkModeBtn'),
+                quickActionsContainer: document.getElementById('quickActions'), 
+                messagesContainer: document.getElementById('chatMessages'),
+                input: document.getElementById('chatInput'), 
+                sendBtn: document.getElementById('sendBtn'),
+                typingIndicator: document.getElementById('typingIndicator'),
+                fileBtn: document.getElementById('fileBtn'), 
+                languageSelector: document.getElementById('languageSelector'),
+                fileUploadOverlay: document.getElementById('fileUploadOverlay'),
+                fileUploadArea: document.getElementById('fileUploadArea'),
+                filePreview: document.getElementById('filePreview'),
+                fileName: document.getElementById('fileName'),
+                fileSize: document.getElementById('fileSize'),
+                fileRemove: document.getElementById('fileRemove'),
+                selectFileBtn: document.getElementById('selectFileBtn'),
+                uploadFileBtn: document.getElementById('uploadFileBtn'),
+                cancelUploadBtn: document.getElementById('cancelUploadBtn'),
+                virtualKeyboard: document.getElementById('virtualKeyboard')
+            };
+        };
+
+        BUPChatbot.prototype.initialize = function() {
+            this.initializeEventListeners();
+            this.updateLanguageUI();
+            this.translateInterface();
+            this.addInitialBotMessage();
+        };
+        
+        BUPChatbot.prototype.initializeEventListeners = function() {
+            var self = this;
+            
+            this.el.chatToggleBtn.addEventListener('click', function() { 
+                self.toggleChat(true); 
+            });
+            
+            this.el.minimizeBtn.addEventListener('click', function() { 
+                self.toggleChat(false); 
+            });
+            
+            this.el.backBtn.addEventListener('click', this.switchToMainView.bind(this));
+            this.el.clearChatBtn.addEventListener('click', this.clearChat.bind(this));
+            
+            this.el.languageBtn.addEventListener('click', function(e) { 
+                e.stopPropagation(); 
+                self.toggleLanguageSelector(); 
+            });
+            
+            this.el.darkModeBtn.addEventListener('click', this.toggleDarkMode.bind(this));
+            this.el.sendBtn.addEventListener('click', this.sendMessage.bind(this));
+            
+            this.el.input.addEventListener('keypress', function(e) { 
+                if (e.key === 'Enter' && !e.shiftKey) { 
+                    e.preventDefault(); 
+                    self.sendMessage(); 
+                } 
+            });
+            
+            this.el.fileBtn.addEventListener('click', this.showFileUpload.bind(this));
+            this.el.selectFileBtn.addEventListener('click', this.triggerFileInput.bind(this));
+            this.el.uploadFileBtn.addEventListener('click', this.uploadFile.bind(this));
+            this.el.cancelUploadBtn.addEventListener('click', this.hideFileUpload.bind(this));
+            this.el.fileRemove.addEventListener('click', this.removeFile.bind(this));
+            
+            document.querySelectorAll('.language-option').forEach(function(option) {
+                option.addEventListener('click', function(e) {
+                    self.changeLanguage(e.currentTarget.dataset.lang);
+                });
+            });
+            
+            this.el.quickActionsContainer.addEventListener('click', function(e) {
+                var button = e.target.closest('.action-btn');
+                if (button) self.sendMessage(button.dataset.message);
+            });
+
+            document.addEventListener('click', function() { 
+                self.el.languageSelector.classList.remove('active'); 
+            });
+        };
+        
+        BUPChatbot.prototype.showNotification = function(message) {
+            var existingToast = this.el.chatContainer.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            var toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            this.el.chatContainer.appendChild(toast);
+
+            setTimeout(function() {
+                toast.remove();
+            }, 2500);
+        };
+            
+        BUPChatbot.prototype.toggleLanguageSelector = function() { 
+            this.el.languageSelector.classList.toggle('active'); 
+        };
+            
+        BUPChatbot.prototype.changeLanguage = function(lang) {
+            if (this.state.currentLanguage === lang) return;
+
+            this.state.currentLanguage = lang;
+            this.updateLanguageUI();
+            this.translateInterface();
+            this.el.languageSelector.classList.remove('active');
+            
+            var message = this.data.translations[lang][lang === 'bn' ? 'lang-changed-to-bn' : 'lang-changed-to-en'];
+            this.showNotification(message);
+        };
+
+        BUPChatbot.prototype.updateLanguageUI = function() {
+            var currentLang = this.state.currentLanguage;
+            document.querySelectorAll('.language-option').forEach(function(opt) {
+                if (opt.dataset.lang === currentLang) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+            this.el.languageBtn.textContent = this.data.translations[this.state.currentLanguage]['header-lang'];
+        };
+
+        BUPChatbot.prototype.translateInterface = function() {
+            var lang = this.state.currentLanguage;
+            var translations = this.data.translations[lang];
+            
+            document.querySelectorAll('[data-translate]').forEach(function(el) {
+                var key = el.getAttribute('data-translate');
+                if (translations[key]) el.textContent = translations[key];
+            });
+            
+            document.querySelectorAll('[data-translate-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-translate-placeholder');
+                if (translations[key]) el.placeholder = translations[key];
+            });
+            
+            document.querySelectorAll('[data-translate-title]').forEach(function(el) {
+                var key = el.getAttribute('data-translate-title');
+                if (translations[key]) el.title = translations[key];
+            });
+            this.updateLanguageUI();
+        };
+            
+        BUPChatbot.prototype.toggleDarkMode = function() {
+            this.state.isDarkMode = !this.state.isDarkMode;
+            
+            if (this.state.isDarkMode) {
+                this.el.body.classList.add('dark-mode');
+                this.el.darkModeBtn.textContent = "☀️ Day Mode";
+                this.el.darkModeBtn.setAttribute('data-translate', 'header-light-mode');
+                this.showNotification(this.data.translations[this.state.currentLanguage]['dark-mode-activated']);
+            } else {
+                this.el.body.classList.remove('dark-mode');
+                this.el.darkModeBtn.textContent = "🌙 Night Mode";
+                this.el.darkModeBtn.setAttribute('data-translate', 'header-dark-mode');
+                this.showNotification(this.data.translations[this.state.currentLanguage]['light-mode-activated']);
+            }
+            
+            this.translateInterface();
+        };
+        
+        BUPChatbot.prototype.sendMessage = function(quickMessage) {
+            var userMessage = quickMessage || this.el.input.value.trim();
+            if (!userMessage) return;
+
+            if (!this.state.chatInitiated) {
+                this.state.chatInitiated = true;
+            }
+
+            this.switchToConversationView();
+            this.addMessage(userMessage, 'user');
+            if (!quickMessage) this.el.input.value = '';
+
+            this.showTypingIndicator();
+
+            var keywordResponse = this.findKeywordResponse(userMessage);
+            var self = this;
+            if (keywordResponse) {
+                setTimeout(function() { 
+                    self.hideTypingIndicator(); 
+                    self.addMessage(keywordResponse, 'bot'); 
+                }, 800);
+                return;
+            }
+            
+            // Simulate AI response
+            setTimeout(function() { 
+                self.hideTypingIndicator(); 
+                self.addMessage("Thank you for your message. I'm here to help with any questions about Bangladesh University of Professionals.", 'bot'); 
+            }, 1500);
+        };
+        
+        BUPChatbot.prototype.addMessage = function(content, type) { 
+            var messageEl = document.createElement('div'); 
+            messageEl.className = 'message ' + type; 
+            
+            var avatar = '<div class="message-avatar"></div>'; 
+            var textContent = '<div class="message-content">' + content + '</div>'; 
+            
+            messageEl.innerHTML = type === 'user' ? 
+                textContent + avatar : 
+                avatar + textContent; 
+            
+            this.el.messagesContainer.appendChild(messageEl); 
+            this.el.messagesContainer.scrollTop = this.el.messagesContainer.scrollHeight; 
+        };
+
+        BUPChatbot.prototype.addInitialBotMessage = function() {
+            var welcomeText = this.data.translations[this.state.currentLanguage]['bot-welcome'];
+            this.addMessage(welcomeText, 'bot');
+        };
+            
+        BUPChatbot.prototype.toggleChat = function(open) { 
+            if (open) {
+                this.el.chatContainer.classList.add('active');
+                this.el.chatToggleBtn.style.display = 'none'; 
+            } else {
+                this.el.chatContainer.classList.remove('active');
+                this.el.chatToggleBtn.style.display = 'flex';
+            }
+        };
+
+        BUPChatbot.prototype.switchToMainView = function() { 
+            this.el.chatContainer.classList.remove('view-conversation'); 
+        };
+            
+        BUPChatbot.prototype.switchToConversationView = function() {
+            if (!this.el.chatContainer.classList.contains('view-conversation')) {
+                this.el.chatContainer.classList.add('view-conversation');
+            }
+        };
+
+        BUPChatbot.prototype.clearChat = function() { 
+            this.el.messagesContainer.innerHTML = ''; 
+            this.state.conversationHistory = [];
+            this.state.chatInitiated = false;
+            this.switchToMainView();
+            this.addInitialBotMessage();
+        };
+
+        BUPChatbot.prototype.showTypingIndicator = function() { 
+            this.el.typingIndicator.style.display = 'block'; 
+            this.el.messagesContainer.scrollTop = this.el.messagesContainer.scrollHeight; 
+        };
+            
+        BUPChatbot.prototype.hideTypingIndicator = function() { 
+            this.el.typingIndicator.style.display = 'none'; 
+        };
+            
+        BUPChatbot.prototype.showFileUpload = function() {
+            this.removeFile();
+            this.el.fileUploadOverlay.classList.add('active');
+        };
+            
+        BUPChatbot.prototype.hideFileUpload = function() {
+            this.el.fileUploadOverlay.classList.remove('active');
+            this.removeFile();
+        };
+            
+        BUPChatbot.prototype.triggerFileInput = function() {
+            var self = this;
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png';
+            fileInput.onchange = function(e) { 
+                self.handleFileSelect(e.target.files[0]); 
+            };
+            fileInput.click();
+        };
+            
+        BUPChatbot.prototype.handleFileSelect = function(file) {
+            if (!file) return;
+            
+            if (file.size > 10 * 1024 * 1024) {
+                alert(this.data.translations[this.state.currentLanguage]['file-too-large']);
+                return;
+            }
+            
+            this.state.selectedFile = file;
+            this.el.fileName.textContent = file.name;
+            this.el.fileSize.textContent = this.formatFileSize(file.size);
+            this.el.filePreview.classList.add('active');
+            this.el.uploadFileBtn.style.display = 'block';
+        };
+            
+        BUPChatbot.prototype.formatFileSize = function(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            var k = 1024;
+            var sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            var i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        };
+            
+        BUPChatbot.prototype.removeFile = function() {
+            this.state.selectedFile = null;
+            this.el.filePreview.classList.remove('active');
+            this.el.uploadFileBtn.style.display = 'none';
+        };
+            
+        BUPChatbot.prototype.uploadFile = function() {
+            if (!this.state.selectedFile) return;
+            
+            var fileName = this.state.selectedFile.name;
+            
+            this.hideFileUpload();
+            this.switchToConversationView();
+            
+            var userMessage = this.data.translations[this.state.currentLanguage]['file-uploaded'].replace('{fileName}', fileName);
+            this.addMessage('📎 ' + userMessage, 'user');
+            
+            this.showTypingIndicator();
+            
+            var self = this;
+            setTimeout(function() { 
+                self.hideTypingIndicator(); 
+                self.addMessage("I've received your file: " + fileName + ". How can I assist you with this document?", 'bot'); 
+            }, 1500);
+        };
+
+        BUPChatbot.prototype.findKeywordResponse = function(message) {
+            var lowerMessage = message.toLowerCase();
+            var responses = this.data.keywordResponses[this.state.currentLanguage];
+            
+            for (var keywords in responses) {
+                if (responses.hasOwnProperty(keywords)) {
+                    var keywordList = keywords.split('|');
+                    for (var i = 0; i < keywordList.length; i++) {
+                        if (lowerMessage.indexOf(keywordList[i].toLowerCase()) > -1) {
+                            return responses[keywords];
+                        }
+                    }
+                }
+            }
+            
+            return null;
+        };
+
+        BUPChatbot.prototype.getTranslations = function() {
+            return {
+                en: { 
+                    'ai-assistant': 'AI Assistant', 'back': 'Back', 'header-clear': 'Clear Chat', 
+                    'header-lang': 'English', 'header-dark-mode': 'Night Mode', 'header-light-mode': 'Day Mode',
+                    'welcome-banner-1': 'WELCOME TO BUP ADMISSION ENQUIRY', 'welcome-banner-2': 'CHATBOT',
+                    'bot-welcome': 'Hello! I\'m BUPBuddy, your AI assistant for Bangladesh University of Professionals (BUP). How can I assist you today?',
+                    'typing': 'BUPBuddy is typing...', 'type-message': 'Type your message here...', 
+                    'help-line': 'Help Line: 09666799390, 01769028540, 01769028541, 01769028542', 
+                    'api-error': "Sorry, I'm having trouble connecting. Please try again later.",
+                    'file-upload': 'Upload File', 'drag-drop': 'Drag & drop files here', 'file-types': 'Supports PDF, DOC, JPG, PNG (Max 10MB)',
+                    'select-file': 'Select File', 'upload-send': 'Upload & Send', 'cancel': 'Cancel', 
+                    'file-uploaded': 'Uploaded file: {fileName}', 
+                    'file-received': 'User has uploaded a file named "{fileName}". Please provide a helpful response related to what this file might contain.',
+                    'file-too-large': 'File is too large. Maximum size is 10MB.',
+                    'dark-mode-activated': 'Night Mode Activated', 'light-mode-activated': 'Day Mode Activated',
+                    'lang-changed-to-en': 'Language changed to English', 'lang-changed-to-bn': 'Language changed to বাংলা',
+                    'login-admit-label': 'LOGIN & ADMIT',
+                    'admission-result-label': 'ADMISSION RESULT',
+                    'suggestion-label': 'SUGGESTIONS', 'question-bank-label': 'QUESTION BANKS',
+                    'programs-label': 'ACADEMIC PROGRAMS', 'eligibility-label': 'ELIGIBILITY', 'how-to-apply-label': 'HOW TO APPLY', 'results-label': 'RESULTS', 'contact-label': 'CONTACT US',
+                    'male-accommodation': 'MALE HALL', 'female-accommodation': 'FEMALE HALL', 'clubs-label': 'CLUBS', 'tour-label': 'VIRTUAL TOUR', 'campus-life-label': 'CAMPUS LIFE',
+                    'library-label': 'LIBRARY', 'medical-label': 'MEDICAL', 'transport-label': 'TRANSPORT', 'safety-label': 'SAFETY', 'notice-label': 'NOTICES',
+                    'labs-label': 'LABS', 'international-label': 'INTERNATIONAL', 'research-label': 'RESEARCH CENTER', 'cml-label': 'MODERN LANGUAGES', 'chsr-label': 'HIGHER STUDIES',
+                    'office-label': 'OFFICES', 'sports-label': 'SPORTS', 'events-label': 'EVENTS', 'cafeteria-label': 'CAFETERIA', 'counseling-label': 'COUNSELING', 'affiliated-label': 'AFFILIATED',
+                    'cat-admission': 'Academics & Admission', 'cat-campus': 'Campus Life', 'cat-services': 'Services & Info', 'cat-resources': 'Research & Resources', 'cat-additional': 'Additional Features',
+                    'about-label': 'ABOUT BUP', 'regulatory-label': 'REGULATORY', 'administration-label': 'ADMINISTRATION', 'grading-label': 'GRADING SYSTEM', 'admission-label': 'ADMISSION PROCESS',
+                    'hall-label': 'HALLS', 'sports-label': 'SPORTS', 'cafeteria-label': 'CAFETERIA', 'auditorium-label': 'AUDITORIUM', 'medical-label': 'MEDICAL CENTER',
+                    'ict-label': 'ICT SERVICES', 'safety-label': 'SAFETY & SUPPORT', 'faculties-label': 'FACULTIES', 'cml-label': 'MODERN LANGUAGES', 'cpc-label': 'COUNSELING',
+                    'chsr-label': 'HIGHER STUDIES', 'brc-label': 'BUP RESEARCH CENTER', 'labs-label': 'LABS', 'clubs-label': 'CLUBS', 'rankings-label': 'RANKINGS',
+                    'alumni-label': 'NOTABLE ALUMNI', 'vcs-label': 'VICE CHANCELLORS', 'affiliated-label': 'AFFILIATED INSTITUTES', 'external-label': 'EXTERNAL LINKS', 'map-label': 'FIND US',
+                    'faq-label': 'FAQ', 'virtual-tour-label': 'VIRTUAL TOUR',
+                    'scholarship-label': 'SCHOLARSHIP', 'journal-label': 'JOURNALS',
+                    'all-bup-info-label': 'ALL BUP INFO', 'mark-dist-label': 'MARK DISTRIBUTION'
+                },
+                bn: { 
+                    'ai-assistant': 'এআই সহায়ক', 'back': 'ফেরত যান', 'header-clear': 'চ্যাট মুছুন', 
+                    'header-lang': 'বাংলা', 'header-dark-mode': 'নাইট মোড', 'header-light-mode': 'ডে মোড',
+                    'welcome-banner-1': 'BUP ভর্তি তথ্য চ্যাটবটে', 'welcome-banner-2': 'স্বাগতম',
+                    'bot-welcome': 'হ্যালো! আমি BUPBuddy, বাংলাদেশ ইউনিভার্সিটি অফ প্রফেশনালস (BUP) এর AI সহায়ক। আজ আপনাকে কীভাবে সাহায্য করতে পারি?',
+                    'typing': 'BUPBuddy টাইপ করছে...', 'type-message': 'আপনার বার্তা এখানে লিখুন...', 
+                    'help-line': 'হেল্প লাইন: ০৯৬৬৬৭৯৯৩৯০, ০১৭৬৯০২৮৫৪০, ০১৭৬৯০২৮৫৪১, ০১৭৬৯০২৮৫৪২', 
+                    'api-error': 'দুঃখিত, সংযোগ করতে সমস্যা হচ্ছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।',
+                    'file-upload': 'ফাইল আপলোড', 'drag-drop': 'ফাইল এখানে টেনে আনুন', 'file-types': 'PDF, DOC, JPG, PNG সমর্থিত (সর্বোচ্চ 10MB)',
+                    'select-file': 'ফাইল নির্বাচন করুন', 'upload-send': 'আপলোড ও পাঠান', 'cancel': 'বাতিল',
+                    'file-uploaded': 'আপলোড করা ফাইল: {fileName}',
+                    'file-received': 'ব্যবহারকারী "{fileName}" নামে একটি ফাইল আপলোড করেছেন। এই ফাইলটিতে কী থাকতে পারে তার উপর ভিত্তি করে একটি সহায়ক উত্তর দিন।',
+                    'file-too-large': 'ফাইলটি খুব বড়। সর্বোচ্চ আকার 10MB।',
+                    'dark-mode-activated': 'নাইট মোড সক্রিয় করা হয়েছে', 'light-mode-activated': 'ডে মোড সক্রিয় করা হয়েছে',
+                    'lang-changed-to-en': 'ভাষা ইংরেজিতে পরিবর্তিত হয়েছে', 'lang-changed-to-bn': 'ভাষা বাংলায় পরিবর্তিত হয়েছে',
+                    'login-admit-label': 'লগইন ও প্রবেশপত্র',
+                    'admission-result-label': 'ভর্তি পরীক্ষার ফলাফল',
+                    'suggestion-label': 'সাজেশন', 'question-bank-label': 'প্রশ্ন ব্যাংক',
+                    'programs-label': 'একাডেমিক প্রোগ্রাম', 'eligibility-label': 'যোগ্যতার মানদণ্ড', 'how-to-apply-label': 'কিভাবে আবেদন করবেন', 'results-label': 'ফলাফল', 'contact-label': 'যোগাযোগ',
+                    'male-accommodation': 'ছাত্র হল', 'female-accommodation': 'ছাত্রী হল', 'clubs-label': 'ক্লাব', 'tour-label': 'ভার্চুয়াল ট্যুর', 'campus-life-label': 'ক্যাম্পাস জীবন',
+                    'library-label': 'লাইব্রেরি', 'medical-label': 'মেডিকেল', 'transport-label': 'পরিবহন', 'safety-label': 'নিরাপত্তা', 'notice-label': 'নোটিশ',
+                    'labs-label': 'ল্যাব', 'international-label': 'আন্তর্জাতিক', 'research-label': 'গবেষণা কেন্দ্র', 'cml-label': 'আধুনিক ভাষা', 'chsr-label': 'উচ্চতর গবেষণা',
+                    'office-label': 'অফিস', 'sports-label': 'খেলাধুলা', 'events-label': 'ইভেন্ট', 'cafeteria-label': 'ক্যাফেটেরিয়া', 'counseling-label': 'কাউন্সেলিং', 'affiliated-label': 'অধিভুক্ত',
+                    'cat-admission': 'একাডেমিক ও ভর্তি', 'cat-campus': 'ক্যাম্পাস জীবন', 'cat-services': 'সেবা ও তথ্য', 'cat-resources': 'গবেষণা ও রিসোর্স', 'cat-additional': 'অতিরিক্ত বৈশিষ্ট্য',
+                    'about-label': 'BUP সম্পর্কে', 'regulatory-label': 'নিয়ন্ত্রক সংস্থা', 'administration-label': 'প্রশাসন', 'grading-label': 'গ্রেডিং সিস্টেম', 'admission-label': 'ভর্তি প্রক্রিয়া',
+                    'hall-label': 'হল', 'sports-label': 'খেলাধুলা', 'cafeteria-label': 'ক্যাফেটেরিয়া', 'auditorium-label': 'অডিটোরিয়াম', 'medical-label': 'মেডিকেল সেন্টার',
+                    'ict-label': 'আইসিটি সেবা', 'safety-label': 'নিরাপত্তা ও সহায়তা', 'faculties-label': 'অনুষদ', 'cml-label': 'আধুনিক ভাষা', 'cpc-label': 'কাউন্সেলিং',
+                    'chsr-label': 'উচ্চতর পড়াশোনা', 'brc-label': 'বিইউপি গবেষণা কেন্দ্র', 'labs-label': 'ল্যাব', 'clubs-label': 'ক্লাব', 'rankings-label': 'র‍্যাঙ্কিং',
+                    'alumni-label': 'উল্লেখযোগ্য প্রাক্তন', 'vcs-label': 'উপাচার্য', 'affiliated-label': 'অধিভুক্ত প্রতিষ্ঠান', 'external-label': 'বহিঃসংযোগ', 'map-label': 'আমাদের অবস্থান',
+                    'faq-label': 'সচরাচর জিজ্ঞাসা', 'virtual-tour-label': 'ভার্চুয়াল ট্যুর',
+                    'scholarship-label': 'স্কলারশিপ', 'journal-label': 'জার্নাল',
+                    'all-info-label-bn': 'সকল তথ্য', 'mark-dist-label-bn': 'নম্বর বিতরণ'
+                }
+            };
+        };
+        BUPChatbot.prototype.getKeywordResponses = function() {
+            return {
+                en: { 
+                    'login and admit card': 'For the Admission Candidate Portal & to download your Admit Card, please use the official login page:<br><br><a href="https://admission.bup.edu.bd/Admission/Login" target="_blank">Go to Login Portal</a><br><br><strong>To Download Your Admit Card:</strong><ol><li>Go to this site: <a href="https://admission.bup.edu.bd" target="_blank">admission.bup.edu.bd</a></li><li>Click on the Login option</li><li>Enter your User ID and Password</li><li>Complete the security check</li><li>Click Submit</li><li>Download and Print your Admit Card</li></ol>',
+                    'admission test result': 'Keep an eye on the official notice board to check the admission test results:<br><br><a href="https://admission.bup.edu.bd/Admission/NoticeAll" target="_blank">View Admission Notices</a>',
+                    'suggestion|tips': "To increase your chances of getting into Bangladesh University of Professionals (BUP), focus on achieving a strong academic record, particularly in your SSC and HSC exams, and prepare thoroughly for the entrance exams.",
+                    'question bank': 'Here are some useful question banks to help you prepare:<br><ul><li><a href="https://www.scribd.com/document/701761623/493083879-BUP-Question-Bank" target="_blank">General BUP Question Bank</a></li><li><a href="https://www.scribd.com/document/466336775/bup-professional-mba-question" target="_blank">Professional MBA Questions</a></li></ul>',
+                    'about bup': "🏛️ Bangladesh University of Professionals (BUP) is a distinct public university in Bangladesh, operated by the armed forces, with a focus on national security, technology, and modern science.",
+                    'tuition fees|cost|fees': "💰 <strong>Faculty-wise Tuition Fees</strong><br>Fees vary by program and faculty. For detailed fee information, please visit: <a href='https://admissiontechbd.com/Versity/Cost/BUP' target='_blank'>BUP Fee Structure</a>",
+                    'compare bup': "🔍 <strong>Compare BUP with Other Universities</strong><br>For detailed comparison between BUP and other universities, please visit:<br><a href='https://admissiontechbd.com/Compare/Varsity?v1=BUP#1' target='_blank'>Compare Universities</a>",
+                    'admission info|all info': "To get all info visit us;<br><br>Link:<br><br><a href='https://admissiontechbd.com/Versity/BUP' target='_blank'>https://admissiontechbd.com/Versity/BUP</a>",
+                    'mark distribution': "📝 <strong>Faculty-wise Mark Distribution</strong><br>Mark distribution varies by faculty. For detailed information, please visit the official admission portal.",
+                    'eligibility': "📋 <strong>Eligibility Criteria</strong><br>To get admission in Bangladesh University of Professionals (BUP), you have to fulfill the eligibility and conditions specified for your preferred unit.",
+                    'how to apply': "📝 <strong>How to Apply for Admission</strong><ol><li>Go to BUP Admission Website: <a href='https://admission.bup.edu.bd' target='_blank'>admission.bup.edu.bd</a></li><li>Click on the \'Apply Online\' button</li><li>Fill out the online application form</li><li>Pay the application fee</li></ol>",
+                    'scholarship|stipend': "🏅 <strong>Scholarships and Stipends</strong><br>BUP offers various scholarships and stipends based on academic performance and financial need."
+                },
+                bn: { 
+                    'লগইন ও প্রবেশপত্র': 'ভর্তির জন্য প্রার্থী পোর্টালে লগ ইন করতে এবং আপনার প্রবেশপত্র ডাউনলোড করতে, অনুগ্রহ করে অফিসিয়াল লগইন পৃষ্ঠাটি ব্যবহার করুন:<br><br><a href="https://admission.bup.edu.bd/Admission/Login" target="_blank">লগইন পোর্টালে যান</a><br><br><strong>আপনার প্রবেশপত্র ডাউনলোড করতে:</strong><ol><li>এই সাইটে যান: <a href="https://admission.bup.edu.bd" target="_blank">admission.bup.edu.bd</a></li><li>লগইন অপশনে ক্লিক করুন</li><li>আপনার ইউজার আইডি এবং পাসওয়ার্ড লিখুন</li><li>নিরাপত্তা যাচাই করুন</li><li>সাবমিট-এ ক্লিক করুন</li><li>আপনার প্রবেশপত্র ডাউনলোড এবং প্রিন্ট করুন</li></ol>',
+                    'ভর্তি পরীক্ষার ফলাফল': 'ভর্তি পরীক্ষার ফলাফল জানতে অফিসিয়াল নোটিশ বোর্ডে চোখ রাখুন:<br><br><a href="https://admission.bup.edu.bd/Admission/NoticeAll" target="_blank">ভর্তির নোটিশ দেখুন</a>',
+                    'সাজেশন|টিপস': "বাংলাদেশ ইউনিভার্সিটি অফ প্রফেশনালস (BUP) তে ভর্তির সম্ভাবনা বাড়ানোর জন্য, আপনার SSC এবং HSC পরীক্ষায় একটি শক্তিশালী একাডেমিক রেকর্ড অর্জনের উপর মনোযোগ দিন এবং প্রবেশিকা পরীক্ষার জন্য পুঙ্খানুপুঙ্খভাবে প্রস্তুতি নিন।",
+                    'প্রশ্ন ব্যাংক': 'আপনাকে প্রস্ততিতে সাহায্য করার জন্য এখানে কিছু দরকারী প্রশ্ন ব্যাংক রয়েছে:<br><ul><li><a href="https://www.scribd.com/document/701761623/493083879-BUP-Question-Bank" target="_blank">সাধারণ বিইউপি প্রশ্ন ব্যাংক</a></li><li><a href="https://www.scribd.com/document/466336775/bup-professional-mba-question" target="_blank">প্রফেশনাল এমবিএ প্রশ্ন</a></li></ul>',
+                    'সম্পর্কে': "🏛️ বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস (বিইউপি) বাংলাদেশের একটি স্বতন্ত্র পাবলিক বিশ্ববিদ্যালয়, যা সশস্ত্র বাহিনী দ্বারা পরিচালিত হয় এবং জাতীয় নিরাপত্তা, প্রযুক্তি ও আধুনিক বিজ্ঞানের উপর গুরুত্বারোপ করে।",
+                    'টিউশন ফি|খরচ': "💰 <strong>অনুষদভিত্তিক টিউশন ফি</strong><br>ফি প্রোগ্রাম এবং অনুষদ অনুযায়ী পরিবর্তিত হয়। বিস্তারিত ফি তথ্যের জন্য, অনুগ্রহ করে দেখুন: <a href='https://admissiontechbd.com/Versity/Cost/BUP' target='_blank'>বিইউপি ফি কাঠামো</a>",
+                    'বিইউপি তুলনা': "🔍 <strong>বিইউপি এবং অন্যান্য বিশ্ববিদ্যালয়ের তুলনা</strong><br>বিইউপি এবং অন্যান্য বিশ্ববিদ্যালয়ের মধ্যে বিস্তারিত তুলনার জন্য, অনুগ্রহ করে দেখুন:<br><a href='https://admissiontechbd.com/Compare/Varsity?v1=BUP#1' target='_blank'>বিশ্ববিদ্যালয়গুলির তুলনা</a>",
+                    'বিইউপি ভর্তির সকল তথ্য': "সকল তথ্য পেতে আমাদের সাথে যোগাযোগ করুন;<br><br>Link:<br><br><a href='https://admissiontechbd.com/Versity/BUP' target='_blank'>https://admissiontechbd.com/Versity/BUP</a>",
+                    'অনুষদভিত্তিক নম্বর বিতরণ': "📝 <strong>নম্বর বন্টন</strong><br>অনুষদ অনুযায়ী নম্বর বিতরণ পরিবর্তিত হয়। বিস্তারিত তথ্যের জন্য, অনুগ্রহ করে অফিসিয়াল ভর্তি পোর্টাল দেখুন।",
+                    'ভর্তির যোগ্যতা': "📋 <strong>ভর্তির যোগ্যতা</strong><br>বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস (বিইউপি)-এ ভর্তির জন্য, আপনাকে আপনার পছন্দের ইউনিটের জন্য নির্দিষ্ট যোগ্যতা এবং শর্তাবলী পূরণ করতে হবে।",
+                    'আবেদন': "📝 <strong>কিভাবে আবেদন করবেন</strong><ol><li>বিইউপি ভর্তি ওয়েবসাইটে যান: <a href='https://admission.bup.edu.bd' target='_blank'>admission.bup.edu.bd</a></li><li>'Apply Online' বাটনে ক্লিক করুন</li><li>অনলাইন আবেদন ফর্ম পূরণ করুন</li><li>আবেদন ফি পরিশোধ করুন</li></ol>",
+                    'স্কলারশিপ|বৃত্তি': "🏅 <strong>স্কলারশিপ এবং বৃত্তি</strong><br>BUP একাডেমিক পারফরম্যান্স এবং আর্থিক প্রয়োজনের উপর ভিত্তি করে বিভিন্ন স্কলারশিপ এবং বৃত্তি প্রদান করে।"
+                }
+            };
+        };
+        
+        document.onreadystatechange = function () {
+            if (document.readyState === "complete") {
+                new BUPChatbot();
+            }
+        }
+    </script>
+</body>
+</html>

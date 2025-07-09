@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRS for BUPBuddy AI Assistant</title>
+    <style>
+        :root {
+            --primary-color: #1a2a6c;
+            --secondary-color: #b21f1f;
+            --accent-color: #3b82f6;
+            --light-bg: #f8f9fa;
+            --dark-bg: #0d1117;
+            --text-color: #333;
+            --light-text: #f0f0f0;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 30px;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .section {
+            padding: 30px 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .subsection {
+            margin-bottom: 25px;
+        }
+        
+        .subsection-title {
+            color: var(--secondary-color);
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .subsection-content {
+            padding-left: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--light-bg);
+            font-weight: 600;
+        }
+        
+        ul, ol {
+            padding-left: 30px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .feature-card {
+            background: var(--light-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .req-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .req-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .req-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .glossary {
+            padding: 30px;
+        }
+        
+        .glossary-item {
+            margin-bottom: 10px;
+        }
+        
+        .glossary-term {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .toc {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .toc-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .toc-list {
+            list-style-type: none;
+        }
+        
+        .toc-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .toc-list li:before {
+            content: "•";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+        }
+        
+        .toc-sublist {
+            list-style-type: none;
+            padding-left: 30px;
+            margin-top: 5px;
+        }
+        
+        .toc-sublist li:before {
+            content: "◦";
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--light-bg);
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .signature-area {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            padding: 20px;
+            border-top: 1px dashed var(--border-color);
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .signature-box {
+            text-align: center;
+            width: 200px;
+        }
+        
+        .signature-line {
+            border-bottom: 1px solid var(--border-color);
+            height: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .version-history {
+            margin: 30px 0;
+        }
+        
+        .version-table {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .section {
+                padding: 20px;
+            }
+            
+            .meta-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .signature-area {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Software Requirements Specification</h1>
+            <div class="subtitle">for</div>
+            <h1>BUPBuddy AI Assistant</h1>
+            <div class="meta-info">
+                <div>Version: 1.0 Approved</div>
+                <div>Date: June 30, 2025</div>
+            </div>
+        </header>
+        
+        <div class="section">
+            <h2 class="section-title">Table of Contents</h2>
+            <div class="toc">
+                <ul class="toc-list">
+                    <li>1. Introduction
+                        <ul class="toc-sublist">
+                            <li>1.1. Purpose</li>
+                            <li>1.2. Document Conventions</li>
+                            <li>1.3. Intended Audience and Reading Suggestions</li>
+                            <li>1.4. Project Scope</li>
+                            <li>1.5. References</li>
+                        </ul>
+                    </li>
+                    <li>2. Overall Description
+                        <ul class="toc-sublist">
+                            <li>2.1. Product Perspective</li>
+                            <li>2.2. Product Features</li>
+                            <li>2.3. User Classes and Characteristics</li>
+                            <li>2.4. Operating Environment</li>
+                            <li>2.5. Design and Implementation Constraints</li>
+                            <li>2.6. User Documentation</li>
+                            <li>2.7. Assumptions and Dependencies</li>
+                        </ul>
+                    </li>
+                    <li>3. System Features
+                        <ul class="toc-sublist">
+                            <li>3.1. User Authentication</li>
+                            <li>3.2. AI-Powered Query Resolution</li>
+                            <li>3.3. Multilingual Support</li>
+                            <li>3.4. File Upload and Analysis</li>
+                            <li>3.5. Quick Action Menu System</li>
+                            <li>3.6. Virtual Keyboard (Bengali)</li>
+                            <li>3.7. Voice Recognition</li>
+                            <li>3.8. Theme Management</li>
+                            <li>3.9. Notification System</li>
+                        </ul>
+                    </li>
+                    <li>4. External Interface Requirements
+                        <ul class="toc-sublist">
+                            <li>4.1. User Interfaces</li>
+                            <li>4.2. Hardware Interfaces</li>
+                            <li>4.3. Software Interfaces</li>
+                            <li>4.4. Communications Interfaces</li>
+                        </ul>
+                    </li>
+                    <li>5. Other Nonfunctional Requirements
+                        <ul class="toc-sublist">
+                            <li>5.1. Performance Requirements</li>
+                            <li>5.2. Safety Requirements</li>
+                            <li>5.3. Security Requirements</li>
+                            <li>5.4. Software Quality Attributes</li>
+                        </ul>
+                    </li>
+                    <li>Appendix A: Glossary</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">1. Introduction</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.1. Purpose</h3>
+                <div class="subsection-content">
+                    <p>The purpose of this document is to provide a detailed overview of the "BUPBuddy AI Assistant" software system. This SRS describes both functional and non-functional requirements as derived from the implemented solution. The document serves as the foundation for the project's development, implementation, and testing phases. It also acts as a contract between stakeholders and establishes the basis for software validation and acceptance.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.2. Document Conventions</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>Main headings: Times New Roman, Bold, 16pt</li>
+                        <li>Sub-headings: Times New Roman, Bold, 14pt</li>
+                        <li>Body text: Times New Roman, 12pt</li>
+                        <li>Requirements: Identified with REQ- prefix followed by unique identifier</li>
+                        <li>Key terms: Highlighted in blue when first introduced</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.3. Intended Audience and Reading Suggestions</h3>
+                <div class="subsection-content">
+                    <p>This document is intended for:</p>
+                    <ul>
+                        <li><strong>Developers:</strong> To understand tasks required during software development</li>
+                        <li><strong>Project Managers:</strong> For project planning and progress tracking</li>
+                        <li><strong>Testers:</strong> To create test cases and validate software functionality</li>
+                        <li><strong>Stakeholders:</strong> To review the scope and capabilities of the system</li>
+                        <li><strong>Technical Support:</strong> To understand system behavior for troubleshooting</li>
+                    </ul>
+                    <p>Reading suggestions: Begin with Section 1 (Introduction) and Section 2 (Overall Description) for a high-level understanding, then proceed to specific sections of interest.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.4. Project Scope</h3>
+                <div class="subsection-content">
+                    <p>The BUPBuddy AI Assistant will serve as a comprehensive information and support system for the Bangladesh University of Professionals (BUP). The system will:</p>
+                    <ul>
+                        <li>Provide instant responses to queries about BUP academics, admissions, and campus life</li>
+                        <li>Offer multilingual support (English and Bengali) for all interactions</li>
+                        <li>Process uploaded documents and provide contextual responses</li>
+                        <li>Present categorized quick actions for common queries</li>
+                        <li>Support voice-based interactions for hands-free operation</li>
+                        <li>Maintain conversation history during active sessions</li>
+                        <li>Provide dark/light mode theming options</li>
+                        <li>Generate contextual responses using Google's Gemini AI API</li>
+                    </ul>
+                    <p>The system will replace manual information lookup processes, reduce administrative workload, and provide 24/7 support to BUP students, faculty, and prospective applicants.</p>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">1.5. References</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>Google Generative AI Documentation: https://ai.google.dev/</li>
+                        <li>Simple Keyboard Library: https://simple-keyboard.com/</li>
+                        <li>BUP Official Website: https://bup.edu.bd/</li>
+                        <li>BUP Admission Portal: https://admission.bup.edu.bd/</li>
+                        <li>IEEE SRS Template: IEEE Std 830-1998</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">2. Overall Description</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.1. Product Perspective</h3>
+                <div class="subsection-content">
+                    <p>BUPBuddy is an independent, web-based AI assistant designed to serve as the primary information portal for Bangladesh University of Professionals. The system integrates with Google's Gemini AI to provide intelligent responses while maintaining a comprehensive database of university-specific information.</p>
+                    <p>Key integrations include:</p>
+                    <ul>
+                        <li>Google Generative AI API for core intelligence</li>
+                        <li>MySQL database for storing system data</li>
+                        <li>Browser-based speech recognition API</li>
+                        <li>Responsive web interface compatible with modern browsers</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.2. Product Features</h3>
+                <div class="subsection-content">
+                    <div class="feature-card">
+                        <div class="feature-title">Core Capabilities:</div>
+                        <ul>
+                            <li>AI-powered question answering about BUP academics and admissions</li>
+                            <li>English and Bengali language support with real-time switching</li>
+                            <li>Document upload and contextual processing (PDF, DOC, JPG, PNG)</li>
+                            <li>Categorized quick actions for common queries</li>
+                            <li>Voice-to-text input functionality</li>
+                            <li>Dark/light mode theming</li>
+                            <li>Conversation history management</li>
+                            <li>Responsive design for all device sizes</li>
+                            <li>Bengali virtual keyboard for text input</li>
+                            <li>User notification system</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.3. User Classes and Characteristics</h3>
+                <div class="subsection-content">
+                    <table>
+                        <tr>
+                            <th>User Class</th>
+                            <th>Characteristics</th>
+                            <th>Access Level</th>
+                        </tr>
+                        <tr>
+                            <td>Prospective Students</td>
+                            <td>Seek admission information, eligibility criteria, programs</td>
+                            <td>Basic access - query resolution only</td>
+                        </tr>
+                        <tr>
+                            <td>Current Students</td>
+                            <td>Need campus information, academic resources, event details</td>
+                            <td>Basic access - query resolution only</td>
+                        </tr>
+                        <tr>
+                            <td>Faculty/Staff</td>
+                            <td>Require administrative information, research resources</td>
+                            <td>Basic access - query resolution only</td>
+                        </tr>
+                        <tr>
+                            <td>Administrators</td>
+                            <td>Manage system configuration and content updates</td>
+                            <td>Full access (future implementation)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.4. Operating Environment</h3>
+                <div class="subsection-content">
+                    <p>The BUPBuddy system operates in the following environment:</p>
+                    <ul>
+                        <li><strong>Client-side:</strong> Modern web browsers (Chrome, Firefox, Edge, Safari)</li>
+                        <li><strong>Server-side:</strong> PHP-based server with MySQL database</li>
+                        <li><strong>APIs:</strong> Google Generative AI API</li>
+                        <li><strong>Operating Systems:</strong> Windows 10/11, macOS, Linux, Android, iOS</li>
+                        <li><strong>Network:</strong> Internet connectivity required for all operations</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.5. Design and Implementation Constraints</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>Must use Google Gemini API for AI responses</li>
+                        <li>Maximum file upload size limited to 10MB</li>
+                        <li>Support for English and Bengali languages only</li>
+                        <li>Responsive design must work on screens from 320px to 1920px width</li>
+                        <li>No user accounts required for basic functionality</li>
+                        <li>All data must be cleared when the browser session ends</li>
+                        <li>Must comply with BUP branding guidelines</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.6. User Documentation</h3>
+                <div class="subsection-content">
+                    <p>The system will include:</p>
+                    <ul>
+                        <li>Onboarding tooltips for first-time users</li>
+                        <li>Interactive tutorial for core features</li>
+                        <li>Contextual help icons throughout the interface</li>
+                        <li>Printable quick reference guide (PDF)</li>
+                        <li>Video tutorials for major features</li>
+                        <li>In-app FAQ section</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">2.7. Assumptions and Dependencies</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>Google Gemini API will remain available and stable</li>
+                        <li>Users have modern browsers with JavaScript enabled</li>
+                        <li>Mobile users have touchscreen devices</li>
+                        <li>Speech recognition available only in Chrome and Edge</li>
+                        <li>Document analysis is based on file names only (no content parsing)</li>
+                        <li>Internet connectivity is available during usage</li>
+                        <li>API keys will be properly secured in production</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">3. System Features</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.1. User Authentication</h3>
+                <div class="subsection-content">
+                    <p>Although the current implementation doesn't require authentication, the system is designed to support future authentication mechanisms.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-1.1</td>
+                            <td>The system shall provide a login interface for administrators</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-1.2</td>
+                            <td>Admin users shall have access to conversation analytics</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-1.3</td>
+                            <td>User sessions shall expire after 30 minutes of inactivity</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.2. AI-Powered Query Resolution</h3>
+                <div class="subsection-content">
+                    <p>The system shall process user queries using Google's Gemini API with contextual awareness.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-2.1</td>
+                            <td>System shall maintain conversation context during a session</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-2.2</td>
+                            <td>Responses shall be provided in the user's selected language</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-2.3</td>
+                            <td>System shall display typing indicators during processing</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-2.4</td>
+                            <td>System shall handle API failures gracefully</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.3. Multilingual Support</h3>
+                <div class="subsection-content">
+                    <p>The system shall provide complete bilingual support (English/Bengali).</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-3.1</td>
+                            <td>All interface elements shall have translations for both languages</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-3.2</td>
+                            <td>Language switching shall maintain current conversation context</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-3.3</td>
+                            <td>Notifications shall display in the current language setting</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.4. File Upload and Analysis</h3>
+                <div class="subsection-content">
+                    <p>Users shall be able to upload documents for contextual analysis.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-4.1</td>
+                            <td>System shall accept PDF, DOC, JPG, PNG files (max 10MB)</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-4.2</td>
+                            <td>Uploaded files shall be acknowledged in the conversation</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-4.3</td>
+                            <td>System shall provide visual feedback during uploads</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-4.4</td>
+                            <td>Files shall be processed based on filename only</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.5. Quick Action Menu System</h3>
+                <div class="subsection-content">
+                    <p>The system shall provide categorized quick actions for common queries.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-5.1</td>
+                            <td>Actions shall be organized into logical categories</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-5.2</td>
+                            <td>Each action shall send a predefined message when clicked</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-5.3</td>
+                            <td>Categories shall display appropriate icons</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.6. Virtual Keyboard (Bengali)</h3>
+                <div class="subsection-content">
+                    <p>The system shall display a Bengali virtual keyboard when needed.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-6.1</td>
+                            <td>Keyboard shall appear when Bengali input field is focused</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-6.2</td>
+                            <td>Keyboard shall support standard Bengali layout</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-6.3</td>
+                            <td>Keyboard input shall be mirrored to the text field</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.7. Voice Recognition</h3>
+                <div class="subsection-content">
+                    <p>The system shall support voice input for queries.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-7.1</td>
+                            <td>System shall detect browser support for speech recognition</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-7.2</td>
+                            <td>Voice input shall be indicated with a visual recording state</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-7.3</td>
+                            <td>Recognized speech shall populate the input field</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.8. Theme Management</h3>
+                <div class="subsection-content">
+                    <p>The system shall support light and dark modes.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-8.1</td>
+                            <td>Theme toggle shall switch between light and dark modes</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-8.2</td>
+                            <td>System shall remember theme preference during session</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-8.3</td>
+                            <td>All UI elements shall adapt to the selected theme</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">3.9. Notification System</h3>
+                <div class="subsection-content">
+                    <p>The system shall provide temporary notifications for user actions.</p>
+                    <table class="req-table">
+                        <tr>
+                            <th>Requirement ID</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-9.1</td>
+                            <td>Notifications shall appear at the top of the chat interface</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-9.2</td>
+                            <td>Notifications shall auto-dismiss after 2.5 seconds</td>
+                        </tr>
+                        <tr>
+                            <td class="req-id">REQ-9.3</td>
+                            <td>Notification content shall be relevant to the action performed</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">4. External Interface Requirements</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.1. User Interfaces</h3>
+                <div class="subsection-content">
+                    <p>The system shall provide the following interface components:</p>
+                    <ul>
+                        <li><strong>Main Chat Interface:</strong> Conversation display area with message bubbles</li>
+                        <li><strong>Input Area:</strong> Text input with attachment and voice buttons</li>
+                        <li><strong>Quick Actions Panel:</strong> Categorized buttons for common queries</li>
+                        <li><strong>Header Controls:</strong> Language selector, theme toggle, clear chat</li>
+                        <li><strong>File Upload Modal:</strong> Drag-and-drop area with file preview</li>
+                        <li><strong>Virtual Keyboard:</strong> Bengali input keyboard</li>
+                        <li><strong>Notifications:</strong> Temporary toast notifications</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.2. Hardware Interfaces</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>Standard keyboard and mouse for desktop interaction</li>
+                        <li>Touchscreen support for mobile devices</li>
+                        <li>Microphone for voice input functionality</li>
+                        <li>Screen sizes from 320px to 1920px width</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.3. Software Interfaces</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li><strong>Google Generative AI API:</strong> For processing user queries</li>
+                        <li><strong>Simple Keyboard Library:</strong> For Bengali virtual keyboard</li>
+                        <li><strong>Browser SpeechRecognition API:</strong> For voice input</li>
+                        <li><strong>MySQL Database:</strong> For storing system data (future)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">4.4. Communications Interfaces</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>HTTPS for all external communications</li>
+                        <li>RESTful API for Google Gemini integration</li>
+                        <li>WebSocket for real-time updates (future)</li>
+                        <li>SMTP for email notifications (future)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">5. Other Nonfunctional Requirements</h2>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.1. Performance Requirements</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>AI responses shall be delivered within 5 seconds</li>
+                        <li>UI shall render within 2 seconds on average hardware</li>
+                        <li>System shall support 100 concurrent users</li>
+                        <li>File uploads shall complete within 10 seconds for 10MB files</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.2. Safety Requirements</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>All file uploads shall be scanned for malware (future)</li>
+                        <li>User data shall not persist beyond the current session</li>
+                        <li>No personally identifiable information shall be stored</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.3. Security Requirements</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li>All API keys shall be secured on the server</li>
+                        <li>HTTPS encryption for all data transmission</li>
+                        <li>Content Security Policy (CSP) implementation</li>
+                        <li>Input sanitization for all user-provided data</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">5.4. Software Quality Attributes</h3>
+                <div class="subsection-content">
+                    <ul>
+                        <li><strong>Availability:</strong> 99.5% uptime during academic periods</li>
+                        <li><strong>Reliability:</strong> Consistent performance under normal load</li>
+                        <li><strong>Maintainability:</strong> Modular code structure with documentation</li>
+                        <li><strong>Portability:</strong> Browser-based with no installation required</li>
+                        <li><strong>Usability:</strong> Intuitive interface with onboarding assistance</li>
+                        <li><strong>Accessibility:</strong> WCAG 2.1 AA compliance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section glossary">
+            <h2 class="section-title">Appendix A: Glossary</h2>
+            <div class="glossary-item">
+                <div class="glossary-term">BUP</div>
+                <div>Bangladesh University of Professionals</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">API</div>
+                <div>Application Programming Interface</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">Gemini</div>
+                <div>Google's AI model used for natural language processing</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">SRS</div>
+                <div>Software Requirements Specification</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">UI</div>
+                <div>User Interface</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">UX</div>
+                <div>User Experience</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">HTTPS</div>
+                <div>Hypertext Transfer Protocol Secure</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">CSP</div>
+                <div>Content Security Policy</div>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">WCAG</div>
+                <div>Web Content Accessibility Guidelines</div>
+            </div>
+        </div>
+        
+        <div class="version-history">
+            <h2 class="section-title">Revision History</h2>
+            <table class="version-table">
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Reason For Changes</th>
+                    <th>Version</th>
+                </tr>
+                <tr>
+                    <td>Document Author</td>
+                    <td>June 30, 2025</td>
+                    <td>Initial Release</td>
+                    <td>1.0</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="signature-area">
+            <div class="signature-box">
+                <div>Prepared By:</div>
+                <div class="signature-line"></div>
+                <div>[Your Name/Team Name]</div>
+            </div>
+            <div class="signature-box">
+                <div>Reviewed By:</div>
+                <div class="signature-line"></div>
+                <div>[Stakeholder Name]</div>
+            </div>
+            <div class="signature-box">
+                <div>Approved By:</div>
+                <div class="signature-line"></div>
+                <div>[Project Manager]</div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 Bangladesh University of Professionals. All rights reserved.</p>
+            <p>Confidential - For internal use only</p>
+        </footer>
+    </div>
+</body>
+</html>
