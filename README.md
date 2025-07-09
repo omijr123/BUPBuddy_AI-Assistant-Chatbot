@@ -16,6 +16,9 @@
 
 BUPBuddy_AI-Assistant-Chatbot redefines the campus experience at Bangladesh University of Professionals with a powerful AI assistant available **anywhere, anytime** across three platforms. Our intelligent chatbot combines Google's Gemini AI with university-specific knowledge to deliver instant answers to academic queries, admission information, and campus life questions - in both English and বাংলা.
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html-blue)](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html)
+[![Video Demo](https://img.shields.io/badge/🎥_Video_Demo-streamable.com/165bb1-red)](https://streamable.com/165bb1)
+
 ## 📸 Screenshots
 
 -- Home page {Day Mode}
@@ -62,6 +65,9 @@ graph TD
 | **🌐 Web App** | Instant access - no installation<br>Progressive Web App capabilities<br>Cross-browser compatibility | [Launch Web Version](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html) |
 | **💻 Desktop App** | System tray integration<br>Push notifications<br>Offline capabilities<br>Keyboard shortcuts | [Download for Windows](https://bup.edu.bd/downloads/desktop)<br>[Download for macOS](https://bup.edu.bd/downloads/macos) |
 | **📱 Mobile App** | Campus GPS navigation<br>Event reminders<br>Biometric login<br>Camera document scanning | [<img src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white">](https://play.google.com/store)<br>[<img src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white">](https://apps.apple.com) |
+
+🎥 Watch BUPBuddy in Action!
+(https://streamable.com/165bb1)
 
 ## 🚀 Key Features Across All Platforms
 
