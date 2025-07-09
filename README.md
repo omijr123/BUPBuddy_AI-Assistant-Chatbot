@@ -66,8 +66,6 @@ graph TD
 | **💻 Desktop App** | System tray integration<br>Push notifications<br>Offline capabilities<br>Keyboard shortcuts | [Download for Windows](https://bup.edu.bd/downloads/desktop)<br>[Download for macOS](https://bup.edu.bd/downloads/macos) |
 | **📱 Mobile App** | Campus GPS navigation<br>Event reminders<br>Biometric login<br>Camera document scanning | [<img src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white">](https://play.google.com/store)<br>[<img src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white">](https://apps.apple.com) |
 
-🎥 Watch BUPBuddy in Action!
-(https://streamable.com/165bb1)
 
 ## 🚀 Key Features Across All Platforms
 
