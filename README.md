@@ -18,17 +18,29 @@ BUPBuddy_AI-Assistant-Chatbot redefines the campus experience at Bangladesh Univ
 
 ## 📸 Screenshots
 
--- Home page
+-- Home page {Day Mode}
 
-![pic1](https://i.postimg.cc/GmqqLkkp/Screenshot-2025-07-08-111527.png)
+![pic1](https://i.postimg.cc/15HdWW9W/Screenshot-2025-06-30-201725.png)
 
--- Property+Listing
+-- Home page {Night Mode}
 
-![pic2](https://i.postimg.cc/y8bphmWb/Screenshot-2025-07-08-112223.png)
+![pic2](https://i.postimg.cc/wMkwGvdt/Screenshot-2025-06-30-193802.png)
 
--- Admin Dashboard
+-- Chatbot {Language - English}
 
-![pic3](https://i.postimg.cc/k5jSRs42/Screenshot-2025-07-08-124441.png)
+![pic3](https://i.postimg.cc/FzGxxBj3/Screenshot-2025-06-30-194001.png)
+
+-- Chatbot {Language - Bangla} 
+
+![pic3](https://i.postimg.cc/FzGxxBj3/Screenshot-2025-06-30-194001.png)
+
+-- Chatbot {Language - English} [ Night Mode ]
+
+![pic3](https://i.postimg.cc/xC18zpTW/Screenshot-2025-06-30-193848.png)
+
+-- Chatbot {Language - Bangla} [ Night Mode ]
+
+![pic3](https://i.postimg.cc/fy3bH3dC/Screenshot-2025-06-30-193919.png)
 
 ```mermaid
 graph TD
