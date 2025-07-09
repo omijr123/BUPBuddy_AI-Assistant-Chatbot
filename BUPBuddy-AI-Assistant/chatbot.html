@@ -492,6 +492,24 @@
             padding-left: 20px;
         }
 
+        .message.bot .message-content { 
+            background: var(--bot-message-bg); 
+            color: var(--text-color); 
+            border-bottom-left-radius: 5px; 
+        }
+        
+        .message.user .message-content { 
+            background: var(--user-message-bg); 
+            color: white; 
+            border-bottom-right-radius: 5px; 
+        }
+        
+        .message-content a { 
+            color: #007bff; 
+            font-weight: 500; 
+            text-decoration: none; 
+        }
+
         .message-content table {
             width: 100%;
             border-collapse: collapse;
@@ -507,12 +525,6 @@
         }
         .message-content th {
             background-color: var(--bot-message-bg);
-        }
-
-        .message-content a { 
-            color: #007bff; 
-            font-weight: 500; 
-            text-decoration: none; 
         }
 
         .message-content a:hover { 
@@ -964,100 +976,6 @@
         body.dark-mode ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-        
-        /* New styles for mobile enhancements */
-        
-        /* Mobile-specific adjustments for file upload */
-        @media (max-width: 500px) {
-            .file-upload-content {
-                width: 95%;
-                padding: 15px;
-            }
-            
-            .file-upload-area {
-                padding: 20px;
-            }
-            
-            .file-upload-buttons {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .file-upload-btn {
-                width: 100%;
-            }
-            
-            .file-preview {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            /* Voice button enhancements */
-            .input-btn.voice-recording {
-                animation: pulse 1s infinite;
-            }
-            
-            /* Chat container adjustments */
-            .chat-container {
-                width: 100%;
-                height: 100%;
-                top: 0;
-                right: 0;
-                border-radius: 0;
-            }
-            
-            .chat-toggle-btn {
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .action-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        /* Voice recording indicator animation */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* File upload enhancements */
-        .file-upload-overlay {
-            z-index: 2001;
-        }
-        
-        .file-upload-content {
-            position: relative;
-        }
-        
-        .file-upload-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-        
-        /* Voice permission notification */
-        .permission-notice {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: var(--notification-bg);
-            color: var(--notification-text);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 2000;
-            max-width: 300px;
-            animation: fadeIn 0.3s ease-out;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -1174,7 +1092,6 @@
     <!-- File Upload Overlay -->
     <div class="file-upload-overlay" id="fileUploadOverlay">
         <div class="file-upload-content">
-            <button class="file-upload-close" id="fileUploadClose"><i class="fas fa-times"></i></button>
             <h3 class="file-upload-title" data-translate="file-upload">Upload File</h3>
             <div class="file-upload-area" id="fileUploadArea">
                 <div class="file-upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
@@ -1194,14 +1111,7 @@
                 <button class="file-upload-btn upload" id="uploadFileBtn" data-translate="upload-send">Upload & Send</button>
                 <button class="file-upload-btn cancel" id="cancelUploadBtn" data-translate="cancel">Cancel</button>
             </div>
-            <!-- Hidden file input for mobile -->
-            <input type="file" id="hiddenFileInput" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
         </div>
-    </div>
-    
-    <!-- Voice permission notice -->
-    <div class="permission-notice" id="permissionNotice">
-        Please allow microphone access to use voice input
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.min.js"></script>
@@ -1268,10 +1178,7 @@
                     selectFileBtn: document.getElementById('selectFileBtn'),
                     uploadFileBtn: document.getElementById('uploadFileBtn'),
                     cancelUploadBtn: document.getElementById('cancelUploadBtn'),
-                    virtualKeyboard: document.getElementById('virtualKeyboard'),
-                    fileUploadClose: document.getElementById('fileUploadClose'),
-                    hiddenFileInput: document.getElementById('hiddenFileInput'),
-                    permissionNotice: document.getElementById('permissionNotice')
+                    virtualKeyboard: document.getElementById('virtualKeyboard')
                 };
             }
 
@@ -1288,10 +1195,6 @@
                 this.updateLanguageUI();
                 this.renderQuickActions();
                 this.translateInterface();
-                
-                // Add event listener for file upload close button
-                this.el.fileUploadClose.addEventListener('click', () => this.hideFileUpload());
-                this.el.hiddenFileInput.addEventListener('change', (e) => this.handleFileSelect(e.target.files[0]));
             }
             
             initializeEventListeners() {
@@ -1412,45 +1315,14 @@
                 this.recognition = new SpeechRecognition();
                 this.recognition.continuous = false;
                 this.recognition.lang = this.state.currentLanguage === 'bn' ? 'bn-BD' : 'en-US';
-                this.recognition.interimResults = true;
                 
-                this.recognition.onresult = (e) => { 
-                    const transcript = Array.from(e.results)
-                        .map(result => result[0])
-                        .map(result => result.transcript)
-                        .join('');
-                    
-                    this.el.input.value = transcript;
-                    
-                    // Only send when the result is final
-                    if (e.results[0].isFinal) {
-                        this.stopVoiceRecording(); 
-                        this.sendMessage(); 
-                    }
+                this.recognition.onresult = e => { 
+                    this.el.input.value = e.results[0][0].transcript; 
+                    this.stopVoiceRecording(); 
+                    this.sendMessage(); 
                 };
                 
-                this.recognition.onerror = (e) => {
-                    console.error('Speech recognition error', e.error);
-                    this.stopVoiceRecording();
-                    
-                    // Show permission notice if permission is denied
-                    if (e.error === 'not-allowed') {
-                        this.showPermissionNotice();
-                    }
-                };
-                
-                this.recognition.onend = () => {
-                    if (this.state.isRecording) {
-                        this.stopVoiceRecording();
-                    }
-                };
-            }
-
-            showPermissionNotice() {
-                this.el.permissionNotice.style.display = 'block';
-                setTimeout(() => {
-                    this.el.permissionNotice.style.display = 'none';
-                }, 5000);
+                this.recognition.onerror = () => this.stopVoiceRecording();
             }
 
             toggleLanguageSelector() { 
@@ -1693,7 +1565,11 @@
             }
             
             triggerFileInput() {
-                this.el.hiddenFileInput.click();
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png';
+                fileInput.onchange = e => this.handleFileSelect(e.target.files[0]);
+                fileInput.click();
             }
             
             handleFileSelect(file) {
@@ -2221,16 +2097,15 @@
                             <tr><td>6</td><td>Portsmouth University</td><td>United Kingdom</td></tr>
                             <tr><td>7</td><td>University of Michigan- Flint College of Innovation and Technology</td><td>USA</td></tr>
                             <tr><td>8</td><td>Faculty of Health, Medicine and Life Science, Maastricht University</td><td>Netherland</td></tr>
-                           极
                             <tr><td>9</td><td>Kohn Kaen University</td><td>Thailand</td></tr>
                         </table>
                         <br><a href="https://bup.edu.bd/office/office_details/17" target="_blank">More about International Affairs</a>`,
-                        'library': `📚 The BUP Library and Archive began in 2010 and has grown to include over 28,000 books and 6,000 journals/magazines. It features an RFID-based management system and provides access to international e-resources.<br><br><a href="https://bup.edu.bd/office/office_details/11" target="_blank">Library Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216极1739692889596.jpg" alt="BUP Library" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
+                        'library': `📚 The BUP Library and Archive began in 2010 and has grown to include over 28,000 books and 6,000 journals/magazines. It features an RFID-based management system and provides access to international e-resources.<br><br><a href="https://bup.edu.bd/office/office_details/11" target="_blank">Library Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739692889596.jpg" alt="BUP Library" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'hall|accommodation': `🏠 BUP currently provides student accommodation in eight rented buildings in Mirpur DOSH, accommodating around 400 students.<br><br>Male Hall: <a href="https://bup.edu.bd/office/office_details/44" target="_blank">Details</a><br>Female Hall: <a href="https://bup.edu.bd/office/office_details/20" target="_blank">Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693045446.jpg" alt="BUP Hall" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'sports|fitness': `⚽ The Physical Education Centre at BUP provides sports and fitness facilities with dedicated trainers.<br><br><a href="https://bup.edu.bd/office/office_details/13" target="_blank">Sports & Fitness Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693472893.jpg" alt="BUP Sports" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'auditorium|bijoy|shadhinota': `🎭 BUP has two auditoriums:<br>- Bijoy Auditorium<br>- Shadhinota Auditorium<br><br><img src="https://icmab.gov.bd/wp-content/uploads/2019/12/BUP3-800x533.jpg" alt="Bijoy Auditorium" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;"><br><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1y1ggJxhdzhPvOOzFzcmGOQGsHOxJggC-hA&s" alt="Shadhinota Auditorium" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'medical|health|doctor': `⚕️ The BUP Medical Center provides comprehensive healthcare services with a team of medical professionals and offers 24/7 on-call support.<br><br><a href="https://bup.edu.bd/office/office_details/10" target="_blank">Medical Center Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693850568.jpg" alt="BUP Medical Center" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
-                        'transport|bus': `🚗 The Mechanical Transport (MT) Section provides commuting services and 24/7 ambulance support.<br><br><a href="https://bup.edu.bd/office/office_details/19" target="_blank">Transport Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693742681.jpg" alt="BUP Transport" style="width:100%; max-width:250px; border-radius:8px; margin-top:5极px;">`,
+                        'transport|bus': `🚗 The Mechanical Transport (MT) Section provides commuting services and 24/7 ambulance support.<br><br><a href="https://bup.edu.bd/office/office_details/19" target="_blank">Transport Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693742681.jpg" alt="BUP Transport" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'ict|services|erp': `💻 BUP has implemented a customized Enterprise Resource Planning (ERP) system to automate academic, financial, and administrative activities.<br><br><a href="https://bup.edu.bd/office/office_details/9" target="_blank">ICT Services Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20230516_1684218063375.jpg" alt="BUP ICT" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'safety|support|security': `🛡️ The Security Cell ensures a safe environment on campus with a dedicated team of security personnel.<br><br><a href="https://bup.edu.bd/office/office_details/26" target="_blank">Safety & Support Details</a><br><img src="https://bup.edu.bd/public/upload/on_campus/20241204_1733297186208.jpg" alt="BUP Security" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">`,
                         'faculties|departments': `🏫 BUP Faculties & Departments:<br>
@@ -2262,7 +2137,7 @@
                             - <a href="https://en.wikipedia.org/wiki/Md._Abdul_Karim" target="_blank">Md. Abdul Karim</a><br>
                             - <a href="https://en.wikipedia.org/wiki/Mohammed_Moshfequr_Rahman" target="_blank">Mohammed Moshfequr Rahman</a><br>
                             - <a href="https://en.wikipedia.org/wiki/Sheikh_Mamun_Khaled" target="_blank">Sheikh Mamun Khaled</a><br>
-                            - <a href="https://en.wikipedia.org/wiki/Tasnia_Farin" target="_blank">Tasnia Far极in</a>`,
+                            - <a href="https://en.wikipedia.org/wiki/Tasnia_Farin" target="_blank">Tasnia Farin</a>`,
                         'vice chancellors': `👨‍🏫 List of BUP Vice-Chancellors:<br>
                             <ul style="padding-left:20px; list-style-type: disc;">
                                 <li>Major General Abdul Wadud (2 Aug 2008 - 14 Feb 2009)</li>
@@ -2316,7 +2191,7 @@
                         <table>
                             <tr><th>Faculty</th><th>Subjects Tested</th><th>Marks Distribution</th><th>Total Marks</th></tr>
                             <tr><td>Faculty of Arts and Social Sciences (FASS)</td><td>English, Bangla, General Knowledge</td><td>English: 40, Bangla: 20, General Knowledge: 40</td><td>100</td></tr>
-                            <tr><td>Faculty of Business Studies (FBS)</td><td>English, Mathematics, General Knowledge</td><td>English: 25, Mathematics: 40, General Knowledge: 10极</td><td>75</td></tr>
+                            <tr><td>Faculty of Business Studies (FBS)</td><td>English, Mathematics, General Knowledge</td><td>English: 25, Mathematics: 40, General Knowledge: 10</td><td>75</td></tr>
                             <tr><td>Faculty of Security and Strategic Studies (FSSS)</td><td>English, Bangla, General Knowledge</td><td>English: 40, Bangla: 20, General Knowledge: 40</td><td>100</td></tr>
                             <tr><td>Faculty of Science and Technology (FST)</td><td>Physics, Mathematics, Biology, Chemistry</td><td>Physics: 20, Mathematics: 20, Biology: 20, Chemistry: 20</td><td>80</td></tr>
                         </table>
@@ -2413,7 +2288,7 @@
                         <h4>১. একাডেমিক এক্সিলেন্স:</h4>
                         <ul>
                             <li><strong>শক্তিশালী GPA:</strong> আপনার SSC এবং HSC উভয় পরীক্ষায় উচ্চ GPA অর্জনের লক্ষ্য রাখুন। উদাহরণস্বরূপ, বিজ্ঞান বিভাগের প্রার্থীদের সাধারণত প্রতিটি পরীক্ষায় ন্যূনতম ৪.২৫ সহ মোট GPA ৯.০০ প্রয়োজন।</li>
-                            <极li><strong>বিষয় নির্বাচন:</strong> আপনার আগ্রহের BUP প্রোগ্রামগুলির সাথে সামঞ্জস্যপূর্ণ বিষয়গুলি বেছে নিন। উদাহরণস্বরূপ, আপনি যদি ব্যবসায় শিক্ষার লক্ষ্য রাখেন, তাহলে নিশ্চিত করুন যে আপনার প্রাসঙ্গিক বিষয়গুলিতে একটি শক্তিশালী ভিত্তি রয়েছে।</li>
+                            <li><strong>বিষয় নির্বাচন:</strong> আপনার আগ্রহের BUP প্রোগ্রামগুলির সাথে সামঞ্জস্যপূর্ণ বিষয়গুলি বেছে নিন। উদাহরণস্বরূপ, আপনি যদি ব্যবসায় শিক্ষার লক্ষ্য রাখেন, তাহলে নিশ্চিত করুন যে আপনার প্রাসঙ্গিক বিষয়গুলিতে একটি শক্তিশালী ভিত্তি রয়েছে।</li>
                         </ul>
                         <h4>২. প্রবেশিকা পরীক্ষার প্রস্তুতি:</h4>
                         <ul>
@@ -2489,7 +2364,7 @@
                         <br><br><strong>অনুষদ গবেষণা:</strong>
                         <br>BRC BUP-তে UGC দ্বারা অর্থায়িত প্রকল্পগুলি পরিচালনা করে। প্রকল্পগুলি BUP-এর অনুষদ/বিভাগগুলির সাথে সম্পর্কিত। BRC BUP-এর অনুষদগুলি থেকে প্রকল্প প্রস্তাব গ্রহণ করে এবং মৌলিকত্ব, ন্যায্যতা, সম্ভাব্যতা, সৃজনশীলতা, প্রভাব ইত্যাদির মতো একাডেমিক বিবেচনার সাথে সামঞ্জস্যপূর্ণ। BRC প্রস্তাব অনুমোদন এবং চূড়ান্ত প্রতিবেদন গ্রহণের জন্য প্রকল্প মূল্যায়ন কমিটির (PEC) সভারও আয়োজন করে।
                         <br><br><strong>স্বাধীন গবেষণা/উদ্ভাবন:</strong>
-                        <br>BRC BUP-এর অনুষদ সদস্যদের দ্বারা জ্ঞানের বিভিন্ন ক্ষেত্রে স্বাধীন গবেষণা/উদ্ভাবন প্রকল্প পরিচালনা করে। BUP-এর অধিভুক্ত প্রতিষ্ঠানগুলি গবেষণা/উদ্ভাবন প্রকল্পে অংশগ্রহণ করতে পারে। BRC BUP এবং এর অধিভুক্ত প্রতিষ্ঠানগুলি থেকে জ্ঞানের বিভিন্ন ক্ষেত্রে গবেষণা বিষয়/উদ্ভাবন প্রকল্পের সুযোগ চিহ্নিত করে/প্রস্তাব গ্রহণ করে। প্রকল্প মূল্যায়ন কমিটির মাধ্যমে যোগ্যতা বিবেচনা করে প্রস্তাবটি গৃহীত/প্রত্যাখ্যান করা হয়।
+                        <br>BRC BUP-এর অনুষদ সদস্যদের দ্বারা জ্ঞানের বিভিন্ন ক্ষেত্রে স্বাধীন গবেষণা/উদ্ভাবন প্রকল্প পরিচালনা করে। BUP-এর অধিভুক্ত প্রতিষ্ঠানগুলিও গবেষণা/উদ্ভাবন প্রকল্পে অংশগ্রহণ করতে পারে। BRC BUP এবং এর অধিভুক্ত প্রতিষ্ঠানগুলি থেকে জ্ঞানের বিভিন্ন ক্ষেত্রে গবেষণা বিষয়/উদ্ভাবন প্রকল্পের সুযোগ চিহ্নিত করে/প্রস্তাব গ্রহণ করে। প্রকল্প মূল্যায়ন কমিটির মাধ্যমে যোগ্যতা বিবেচনা করে প্রস্তাবটি গৃহীত/প্রত্যাখ্যান করা হয়।
                         <br><br><strong>পরামর্শ:</strong>
                         <br>BRC পরামর্শের জন্য প্রকল্প পরিচালক নির্বাচন সহ প্রকল্প দল গঠন করে। সমস্ত প্রস্তাব প্রকল্প মূল্যায়ন কমিটির (PEC) মাধ্যমে যাচাই করা হয়। পরামর্শ পরিষেবাগুলি ব্যবসায়িক অধ্যয়ন, জনসংখ্যাতাত্ত্বিক এবং জনসংখ্যা অধ্যয়ন, দারিদ্র্য অধ্যয়ন, উন্নয়ন অধ্যয়ন, সুরক্ষা অধ্যয়ন, শান্তি ও সংঘাত, জনস্বাস্থ্য, সাইবার সুরক্ষা, 4IR, শিল্প গবেষণা, লিঙ্গ গবেষণা ইত্যাদির উপর দৃষ্টি নিবদ্ধ করে। এই কেন্দ্রীভূত ক্ষেত্রগুলিতে পরিষেবাগুলি নিম্নরূপ:
                         <ul>
@@ -2533,7 +2408,7 @@
                         <br><br><strong>ছবি:</strong>
                         <br><img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrisIBXFUTn0kX2n2WqghEe2mKSW_GIDieEl6MsY6pEeCxcjcxfmq2i4S2Au9hxYs5LiDe2dTQuypaLzdOB-Ysi5sSw__goZwaAr59vwOZDmqpE98zCLVFP5nEZXMu0F2BrHhuG0A=s1360-w1360-h1020-rw" alt="ভিস্তা ক্যাফেটেরিয়া" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">
                         <br><img src="https://bup.edu.bd/public/upload/on_campus/20250216_1739693570778.jpg" alt="ভিস্তা ক্যাফেটেরিয়া অভ্যন্তর" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">
-                        <br><a href="https://scontent.fdac157-1.fna.fbcdn.net/v/t39.30808-6/488451294_644502381741219_1678133016158328585_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFHMMaw_oO1WOv9oaThULQQNi极VzV8bw_TM2JXNXxvD9M-xox2dsSwMCwYB9FiscvXBaRDktiL1hJUBV66i8f3OF&_nc_ohc=EvIBslv1y48Q7kNvwGdAVSA&_nc_oc=Adlh9ESFrsNpLVMOI7lnV1PHbvF5RU8g06aU-zDI_MJMXOU74s30Ka3jjRite_lyD9I&_nc_zt=23&_nc_ht=scontent.fdac157-1.fna&_nc_gid=qMPdpijfK8B_HUfWWFWv4g&oh=00_AfNhwpa4HdH2AjydDb687oDU3sJ9WqYwCWWG32ObPDh8kg&oe=68647CBA" target="_blank">মেনু দেখুন</a>
+                        <br><a href="https://scontent.fdac157-1.fna.fbcdn.net/v/t39.30808-6/488451294_644502381741219_1678133016158328585_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFHMMaw_oO1WOv9oaThULQQNiVzV8bw_TM2JXNXxvD9M-xox2dsSwMCwYB9FiscvXBaRDktiL1hJUBV66i8f3OF&_nc_ohc=EvIBslv1y48Q7kNvwGdAVSA&_nc_oc=Adlh9ESFrsNpLVMOI7lnV1PHbvF5RU8g06aU-zDI_MJMXOU74s30Ka3jjRite_lyD9I&_nc_zt=23&_nc_ht=scontent.fdac157-1.fna&_nc_gid=qMPdpijfK8B_HUfWWFWv4g&oh=00_AfNhwpa4HdH2AjydDb687oDU3sJ9WqYwCWWG32ObPDh8kg&oe=68647CBA" target="_blank">মেনু দেখুন</a>
                         <br><br><strong>২. অ্যামিটি - এফবিএস ক্যাফেটেরিয়া:</strong>
                         <br><img src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nreXkL6ascUI0UDrQyY_PAh0gZKxu4sclU5-KNqEsQD28GISRHFZG6JtI8oh14xncahWHNLJUBvai-sqkAgZl0EseUoTTwDWoGgTKXmKaB-Tb6qMttl8AeXyKk-1YZvsE9Yf0lOfw=s1360-w1360-h1020-rw" alt="অ্যামিটি ক্যাফেটেরিয়া" style="width:100%; max-width:250px; border-radius:8px; margin-top:5px;">
                         <br><br><strong>৩. থার্ড প্লেস:</strong>
@@ -2597,7 +2472,7 @@
                                 <tr><td>গণিত</td><td>40</td></tr>
                                 <tr><td>ইংরেজি</td><td>25</td></tr>
                                 <tr><td>সাধারণ জ্ঞান</td><td>10</td></tr>
-                                <tr><td><strong>মোট</strong></td><td><strong>75</极></td></tr>
+                                <tr><td><strong>মোট</strong></td><td><strong>75</strong></td></tr>
                             </tbody>
                         </table>
                         <i>দ্রষ্টব্য: প্রতিটি ভুল উত্তরের জন্য 0.25 নম্বর কাটা হবে।</i><br>
@@ -2656,7 +2531,7 @@
                         </ul>
                         জিসিই (ও) লেভেল এবং এ-লেভেল প্রার্থীদের ও-লেভেলে কমপক্ষে ৫টি বিষয়ে এবং এ-লেভেলে ২টি বিষয়ে পাস হতে হবে; মোট পয়েন্ট কমপক্ষে ২৭ হতে হবে।
                         <br><br><strong>ফ্যাকাল্টি অব সায়েন্স অ্যান্ড টেকনোলজি (FST)</strong>
-                        <br>বিজ্ঞান বিভাগ/গ্রুপ থেকে এসএসস极/দাখিল/ও-লেভেল এবং এইচএসসি/আলিম/এ-লেভেল পাশ হতে হবে।
+                        <br>বিজ্ঞান বিভাগ/গ্রুপ থেকে এসএসসি/দাখিল/ও-লেভেল এবং এইচএসসি/আলিম/এ-লেভেল পাশ হতে হবে।
                         <br>বিভাগ অনুযায়ী প্রয়োজনীয় জিপিএ:
                         <ul>
                             <li><strong>বিজ্ঞান বিভাগ:</strong> মোট জিপিএ ৬.২৫ (প্রতিটি পরীক্ষায় ন্যূনতম জিপিএ ৩.০০)</li>
@@ -2735,7 +2610,7 @@
                         'অনুষদ': `🏫 বিইউপি অনুষদ ও বিভাগ:<br>- <strong>FASS:</strong> <a href="https://bup.edu.bd/faculty_home/1" target="_blank">কলা ও সামাজিক বিজ্ঞান অনুষদ</a><br>- <strong>FSSS:</strong> <a href="https://bup.edu.bd/faculty_home/2" target="_blank">নিরাপত্তা ও কৌশলগত অধ্যয়ন অনুষদ</a><br>- <strong>FST:</strong> <a href="https://bup.edu.bd/faculty_home/3" target="_blank">বিজ্ঞান ও প্রযুক্তি অনুষদ</a><br>- <strong>FBS:</strong> <a href="https://bup.edu.bd/faculty_home/4" target="_blank">ব্যবসায় শিক্ষা অনুষদ</a><br>- <strong>FMS:</strong> <a href="https://bup.edu.bd/faculty_home/7" target="_blank">মেডিকেল সায়েন্স অনুষদ</a>`,
                         'আধুনিক ভাষা': `🌐 সেন্টার ফর মডার্ন ল্যাঙ্গুয়েজেস (সিএমএল) ইংরেজি, ফরাসি, জার্মান, জাপানি, চীনা, তুর্কি, এবং আরবি ভাষার কোর্স অফার করে।<br><br><a href="https://bup.edu.bd/faculty_home/8" target="_blank">সিএমএল বিস্তারিত</a>`,
                         'কাউন্সেলিং': `🤝 কাউন্সেলিং ও প্লেসমেন্ট সেন্টার (সিপিসি) একাডেমিক কাউন্সেলিং, সামাজিক-মানসিক কাউন্সেলিং এবং প্লেসমেন্ট পরিষেবা প্রদান করে।<br><br><a href="https://bup.edu.bd/office/office_details/33" target="_blank">সিপিসি বিস্তারিত</a>`,
-                        'উচ্চতর গবেষণা': `🎓 সেন্টার ফর হায়ার স্টাডিজ অ্যান্ড রিসার্চ (সিএইচএসআর) এমফিল, পিএইচডি, এবং পোস্টডক্টোরাল গবেষণা প্রোগ্রাম অফার করে।<br><br><a href="https://b极up.edu.bd/faculty_home/9" target="_blank">সিএইচএসআর বিস্তারিত</a>`,
+                        'উচ্চতর গবেষণা': `🎓 সেন্টার ফর হায়ার স্টাডিজ অ্যান্ড রিসার্চ (সিএইচএসআর) এমফিল, পিএইচডি, এবং পোস্টডক্টোরাল গবেষণা প্রোগ্রাম অফার করে।<br><br><a href="https://bup.edu.bd/faculty_home/9" target="_blank">সিএইচএসআর বিস্তারিত</a>`,
                         'বিইউপি গবেষণা কেন্দ্র': `🔬 বিইউপি রিসার্চ সেন্টার (বিআরসি) অনুষদ গবেষণা, স্বাধীন গবেষণা/উদ্ভাবন, এবং পরামর্শ সমর্থন করে।<br><br><a href="https://bup.edu.bd/office/office_details/40" target="_blank">বিআরসি বিস্তারিত</a>`,
                         'ল্যাব': `🔬 বিইউপিতে একাধিক আধুনিক ল্যাব রয়েছে। সম্পূর্ণ তালিকার জন্য, দেখুন: <a href="https://bup.edu.bd/labs" target="_blank">সমস্ত ল্যাব</a>`,
                         'ক্লাব': `🎉 বিইউপির ২৬টি সক্রিয় ছাত্র ক্লাব রয়েছে। সম্পূর্ণ তালিকার জন্য, দেখুন: <a href="https://bup.edu.bd/clubs" target="_blank">সমস্ত ক্লাব দেখুন</a>`,
@@ -2878,7 +2753,7 @@
                             { icon: '📋', label: 'ADMISSION PROCESS', labelKey: 'admission-label', message: 'Admission process' },
                             { icon: '💯', label: 'MARK DISTRIBUTION', labelKey: 'mark-dist-label', message: 'mark distribution' },
                             { icon: 'ℹ️', label: 'ALL BUP INFO', labelKey: 'all-bup-info-label', message: 'all info' },
-                            { icon: '🔑', label: 'LOGIN & ADMIT', labelKey: 'login-admit-label', message极: 'Login and Admit Card' },
+                            { icon: '🔑', label: 'LOGIN & ADMIT', labelKey: 'login-admit-label', message: 'Login and Admit Card' },
                             { icon: '❓', label: 'FAQ', labelKey: 'faq-label', message: 'FAQ' }
                         ]},
                         { title: 'Campus Life', titleKey: 'cat-campus', icon: 'fas fa-university', items: [
