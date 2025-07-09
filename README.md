@@ -7,7 +7,10 @@
   <img src="https://img.shields.io/badge/Release-v1.0-success?style=for-the-badge">
 </div>
 
-## 🌟 Introducing BUPBuddy: Your Campus Genius Across All Devices
+**See BUPBuddy!** 🏡  
+[Live Link Click Here](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html) | 
+
+## 🌟 Introducing BUPBuddy: Campus Genius Across All Devices
 
 BUPBuddy_AI-Assistant-Chatbot redefines the campus experience at Bangladesh University of Professionals with a powerful AI assistant available **anywhere, anytime** across three platforms. Our intelligent chatbot combines Google's Gemini AI with university-specific knowledge to deliver instant answers to academic queries, admission information, and campus life questions - in both English and বাংলা.
 
