@@ -63,11 +63,11 @@ graph TD
 
 ## ✨ Multi-Platform Superpowers
 
-| Platform | Highlights | Get It Now |
-|----------|------------|------------|
-| **🌐 Web App** | Instant access - no installation<br>Progressive Web App capabilities<br>Cross-browser compatibility | [Launch Web Version](https://40ylgxhnaqz19wmzb7fs7a.on.drv.tw/www.bupbuddy.com/BUPBuddy/chatbot.html) |
-| **💻 Desktop App** | System tray integration<br>Push notifications<br>Offline capabilities<br>Keyboard shortcuts | [Download for Windows](https://bup.edu.bd/downloads/desktop)<br>[Download for macOS](https://bup.edu.bd/downloads/macos) |
-| **📱 Mobile App** | Campus GPS navigation<br>Event reminders<br>Biometric login<br>Camera document scanning | [<img src="https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white">](https://play.google.com/store)<br>[<img src="https://img.shields.io/badge/App_Store-0D96F6?style=for-the-badge&logo=app-store&logoColor=white">](https://apps.apple.com) |
+| Platform | Highlights |
+|----------|------------|
+| **🌐 Web App** | Instant access - no installation<br>Progressive Web App capabilities<br>Cross-browser compatibility |
+| **💻 Desktop App** | System tray integration<br>Push notifications<br>Offline capabilities<br>Keyboard shortcuts |
+| **📱 Mobile App** | Campus GPS navigation<br>Event reminders<br>Biometric login<br>Camera document scanning | 
 
 
 ## 🚀 Key Features Across All Platforms
@@ -211,5 +211,5 @@ BUPBuddy is - free for all students, faculty, and staff of Bangladesh University
 <div align="center">
   <h3>Empowering BUP Community Through Intelligent Assistance</h3>
   <p>Excellence Through Knowledge • Innovation Through Technology • Community Through Connection</p>
-  <img src="https://img.shields.io/github/stars/BUP-Official/BUPBuddy_AI-Assistant-Chatbot?style=social">
+  
 </div>
