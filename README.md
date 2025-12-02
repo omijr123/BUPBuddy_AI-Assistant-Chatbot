@@ -612,33 +612,14 @@ This project is developed for educational purposes at Bangladesh University of P
 ## 🙏 Acknowledgments
 
 ### Core Development Team
-- **Project Lead**: [Your Name/Team Name]
+- **Project Lead**: [Jablay Noor Rahman]
 - **AI Integration**: Google Gemini Pro API
-- **UI/UX Design**: Material Design Team
+- **UI/UX Design**: Jablay Noor Rahman
 - **Testing**: BUP Student Volunteers
-
-### Special Thanks To
-- Bangladesh University of Professionals Administration
-- Google AI for Gemini API Access
-- Open Source Community for invaluable tools and libraries
-- All beta testers and contributors
 
 ### Resources
 - [BUP Official Website](https://www.bup.edu.bd)
 - [Google AI Gemini Documentation](https://ai.google.dev/)
-- [Project Documentation](https://docs.bupbuddy.edu.bd)
-- [API Reference](https://api.bupbuddy.edu.bd/docs)
-
-## 📞 Support & Contact
-
-**For Technical Support:**
-- 📧 Email: support@bupbuddy.edu.bd
-- 💬 Discord: [BUPBuddy Community](https://discord.gg/bupbuddy)
-- 🐦 Twitter: [@BUPBuddyAI](https://twitter.com/BUPBuddyAI)
-
-**For Academic Inquiries:**
-- Contact BUP Computer Science Department
-- Visit BUP ICT Center
 
 ---
 
